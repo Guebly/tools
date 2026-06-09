@@ -289,30 +289,44 @@ export default function InstaPreview() {
 
         {/* ── Preview canvas ── */}
         <main className="relative flex-1 min-w-0 overflow-auto
-          bg-slate-100 dark:bg-[#0a0a0a]
-          flex flex-col items-center py-5 px-3 sm:px-6 gap-4">
+          bg-slate-100 dark:bg-[#080808]
+          flex flex-col items-center py-6 px-3 sm:px-6 gap-6">
 
-          {/* Dot grid bg */}
-          <div className="absolute inset-0 pointer-events-none" style={{
-            backgroundImage: "radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px)",
-            backgroundSize: "24px 24px",
-          }} />
+          {/* Subtle background glow */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Dot grid — adapts to theme */}
+            <div className="absolute inset-0" style={{
+              backgroundImage: appTheme === "dark"
+                ? "radial-gradient(circle,rgba(255,255,255,0.035) 1px,transparent 1px)"
+                : "radial-gradient(circle,rgba(0,0,0,0.07) 1px,transparent 1px)",
+              backgroundSize: "24px 24px",
+            }} />
+            {/* IG radial glow */}
+            <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full"
+              style={{ background: "radial-gradient(ellipse, rgba(220,39,67,0.05) 0%, transparent 70%)", filter: "blur(40px)" }} />
+          </div>
 
-          {/* ── Controls ── */}
-          <div className="relative z-10 flex items-center gap-2 flex-wrap">
+          {/* ── Controls bar ── */}
+          <div className="relative z-10 flex items-center gap-2 flex-wrap
+            px-3 py-2 rounded-2xl
+            border border-slate-200 dark:border-slate-800/80
+            bg-white/90 dark:bg-slate-900/60
+            backdrop-blur-sm
+            shadow-sm">
 
             {/* Device toggle */}
-            <div className="flex rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#161616]">
+            <div className="flex rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/50 p-0.5 gap-0.5">
               {(["mobile","desktop"] as DeviceView[]).map(mode => (
                 <button key={mode} onClick={() => setDeviceView(mode)}
-                  className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold transition-all ${
+                  className={[
+                    "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-150",
                     deviceView === mode
-                      ? "ig-gradient text-white"
-                      : "text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
-                  }`}>
+                      ? "ig-gradient text-white shadow-sm"
+                      : "text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300",
+                  ].join(" ")}>
                   {mode === "mobile" ? (
                     <>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <rect x="5" y="2" width="14" height="20" rx="2"/>
                         <line x1="12" y1="18" x2="12.01" y2="18" strokeLinecap="round" strokeWidth="3"/>
                       </svg>
@@ -320,7 +334,7 @@ export default function InstaPreview() {
                     </>
                   ) : (
                     <>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <rect x="2" y="3" width="20" height="14" rx="2"/>
                         <path d="M8 21h8M12 17v4"/>
                       </svg>
@@ -331,21 +345,22 @@ export default function InstaPreview() {
               ))}
             </div>
 
-            <div className="w-px h-5 bg-slate-200 dark:bg-slate-800" />
+            <div className="w-px h-4 bg-slate-200 dark:bg-slate-700" />
 
             {/* IG theme toggle */}
-            <div className="flex rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#161616]">
+            <div className="flex rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/50 p-0.5 gap-0.5">
               {(["light","dark"] as IgTheme[]).map(t => (
                 <button key={t}
                   onClick={() => { setIgTheme(t); saveIgTheme(t); }}
-                  className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold transition-all ${
+                  className={[
+                    "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-150",
                     igTheme === t
-                      ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                      : "text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
-                  }`}>
+                      ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm"
+                      : "text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300",
+                  ].join(" ")}>
                   {t === "light" ? (
                     <>
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <circle cx="12" cy="12" r="5"/>
                         <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
                         <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
@@ -356,7 +371,7 @@ export default function InstaPreview() {
                     </>
                   ) : (
                     <>
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
                       </svg>
                       <span className="hidden sm:inline">IG Dark</span>
@@ -366,8 +381,13 @@ export default function InstaPreview() {
               ))}
             </div>
 
-            <span className="text-[11px] text-slate-400 dark:text-slate-600 hidden xl:block">
-              Arraste as fotos para reorganizar
+            <div className="w-px h-4 bg-slate-200 dark:bg-slate-700" />
+
+            <span className="text-[11px] font-medium text-slate-400 dark:text-slate-600 hidden xl:flex items-center gap-1.5">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 9l4-4 4 4M9 5v14M19 15l-4 4-4-4M15 19V5"/>
+              </svg>
+              Arraste para reorganizar
             </span>
           </div>
 
@@ -390,14 +410,21 @@ export default function InstaPreview() {
           </AnimatePresence>
 
           {/* ── Footer ── */}
-          <a href="https://www.guebly.com.br" target="_blank" rel="noopener noreferrer"
-            className="relative z-10 flex items-center gap-2 pb-6
-              text-[11px] text-slate-400 dark:text-slate-600
-              hover:text-slate-600 dark:hover:text-slate-400 transition">
-            <img src="/logo-64.png" alt="Guebly"
-              className="w-4 h-4 rounded object-contain opacity-60" />
-            InstaPreview é open-source · feito pela Guebly
-          </a>
+          <div className="relative z-10 flex items-center gap-3 pb-4">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-slate-300 dark:to-slate-700" />
+            <a href="https://www.guebly.com.br" target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full
+                border border-slate-200 dark:border-slate-800
+                bg-white/80 dark:bg-slate-900/60
+                text-[11px] font-semibold text-slate-400 dark:text-slate-600
+                hover:text-slate-600 dark:hover:text-slate-400
+                hover:border-slate-300 dark:hover:border-slate-700
+                transition-all">
+              <img src="/logo-64.png" alt="Guebly" className="w-3.5 h-3.5 rounded object-contain opacity-70" />
+              Open-source · by Guebly
+            </a>
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-slate-300 dark:to-slate-700" />
+          </div>
         </main>
       </div>
 

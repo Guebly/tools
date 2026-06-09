@@ -620,22 +620,25 @@ export default function Sidebar({
       </div>
 
       {/* ── Guebly footer ── */}
-      <div className="flex-shrink-0 border-t border-slate-200 dark:border-slate-800 px-3 py-3 bg-white dark:bg-slate-950">
+      <div className="flex-shrink-0 border-t border-slate-200 dark:border-slate-800 px-3 py-2.5
+        bg-gradient-to-r from-slate-50 to-white dark:from-slate-950 dark:to-[#0a0a0a]">
         <a href="https://www.guebly.com.br" target="_blank" rel="noopener noreferrer"
-          className="flex items-center gap-2.5 group p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-all">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden bg-white dark:bg-slate-900 group-hover:scale-105 transition-all">
-            <img
-              src="https://www.guebly.com.br/guebly.png"
-              alt="Guebly"
-              className="w-full h-full object-contain"
-            />
+          className="flex items-center gap-2.5 group p-2 rounded-xl
+            hover:bg-white dark:hover:bg-slate-900/60
+            border border-transparent hover:border-slate-200 dark:hover:border-slate-800
+            transition-all duration-150">
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0
+            overflow-hidden ig-gradient p-0.5">
+            <div className="w-full h-full rounded-md bg-white dark:bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
+              <img src="/logo-64.png" alt="Guebly" className="w-5 h-5 object-contain" />
+            </div>
           </div>
-          <div className="flex-1">
-            <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-ig-red transition">
-              InstaPreview
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight truncate group-hover:ig-text transition">
+              Guebly Tools
             </p>
-            <p className="text-[10px] text-slate-500 dark:text-slate-500 leading-tight">
-              by guebly.com.br
+            <p className="text-[10px] text-slate-400 dark:text-slate-600 leading-tight">
+              Open-source · guebly.com.br
             </p>
           </div>
         </a>
