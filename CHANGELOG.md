@@ -16,6 +16,17 @@
 - Corrigida ordem do @import Google Fonts antes das diretivas Tailwind
 - Repos originais arquivados: guebly-insta-preview, guebly-zap-transcriber, guebly-text-formatter, guebly-readme-to-pdf
 
+## 2026-06-09 - Suporte a tema claro/escuro (light/dark mode)
+
+- Criado `src/contexts/ThemeContext.tsx` com ThemeProvider, toggle e persistência em localStorage (`guebly-theme`)
+- `main.tsx`: envolvido App com ThemeProvider
+- `Layout.tsx`: adicionado botão de toggle sol/lua (Sun/Moon do lucide-react) na barra de navegação
+- `index.css`: expandida paleta completa de variáveis CSS para `html.light-tool`; `html/body` agora usa `var(--bg)`; adicionados estilos de scrollbar para modo claro
+- `ZapTranscriber.tsx`: tema local movido para dentro do componente, tornando-o reativo ao ThemeContext (paleta verde escura/clara)
+- `TextFormatter.tsx`: cores hardcoded substituídas por variáveis CSS (`var(--bg)`, `var(--text)`, `var(--border)`, etc.)
+- `ReadmePdf.tsx`: estilos refatorados com funções que aceitam `isDark` para suportar ambos os modos
+- `Home.tsx`: adicionado separador `border-top` no rodapé
+
 ## 2026-06-09 - Melhoria de UI/UX e identidade visual
 
 - Adicionada logo oficial da Guebly (guebly.png 1024x1024) na pasta public
