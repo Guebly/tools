@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-06-09 - Correção de dark/light mode em todas as páginas
+
+- **ReadmePdf.tsx** — `ToastStack` corrigido: fundo do toast agora é tema-aware (dark `rgba(20,20,20,0.95)` / light `rgba(255,255,255,0.97)`)
+- **InstaPreview.tsx** — corrigido conflito de classes CSS: ao aplicar tema, remove corretamente `light-tool` ou `dark`; ao sair da página, restaura o tema global (`guebly-theme`) para não quebrar outras ferramentas
+- **Home.tsx** — redesenho completo com `c` color object para dark/light, todos os hardcodes removidos
+
 ## 2026-06-09 - Redesign premium da UI/UX
 
 - **Home.tsx** — redesenho completo: navbar topo (logo + badge "tools" + GitHub), hero com logo 80px + gradiente no título, 4 cards 2x2 com atalhos de teclado (1/2/3/4), animações de hover com glow colorido, rodapé minimalista "by Guebly"

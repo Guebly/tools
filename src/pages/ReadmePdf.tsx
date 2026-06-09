@@ -73,7 +73,7 @@ function useToast() {
   return { toasts, add };
 }
 
-function ToastStack({ toasts }: { toasts: Toast[] }) {
+function ToastStack({ toasts, isDark }: { toasts: Toast[]; isDark: boolean }) {
   const c: Record<ToastType, string> = {
     success: "#22c55e",
     error:   "#ef4444",
@@ -92,11 +92,11 @@ function ToastStack({ toasts }: { toasts: Toast[] }) {
           style={{
             display: "flex", alignItems: "center", gap: 8,
             padding: "10px 16px", borderRadius: 10,
-            background: "rgba(20,20,20,0.95)",
+            background: isDark ? "rgba(20,20,20,0.95)" : "rgba(255,255,255,0.97)",
             border: `1px solid ${c[t.type]}40`,
             backdropFilter: "blur(12px)",
             color: c[t.type],
-            boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+            boxShadow: isDark ? "0 4px 20px rgba(0,0,0,0.4)" : "0 4px 20px rgba(0,0,0,0.12)",
           }}
         >
           {icons[t.type]}
@@ -265,7 +265,7 @@ export default function ReadmePdf() {
           fontFamily: "'Plus Jakarta Sans', sans-serif",
         }}
       >
-        <ToastStack toasts={toasts} />
+        <ToastStack toasts={toasts} isDark={isDark} />
         <input ref={fileRef} type="file" accept=".md,.txt,.markdown" style={{ display: "none" }} onChange={loadFile} />
 
         {/* ── Full-height split layout ── */}

@@ -75,9 +75,31 @@ export default function InstaPreview() {
 
   /* ── Apply app theme class to <html> ── */
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", appTheme === "dark");
+    const html = document.documentElement;
+    if (appTheme === "dark") {
+      html.classList.remove("light-tool");
+      html.classList.add("dark");
+    } else {
+      html.classList.remove("dark");
+      html.classList.add("light-tool");
+    }
     saveTheme(appTheme);
   }, [appTheme]);
+
+  /* ── Restore global theme on unmount ── */
+  useEffect(() => {
+    return () => {
+      const global = localStorage.getItem("guebly-theme");
+      const html = document.documentElement;
+      if (global === "light") {
+        html.classList.remove("dark");
+        html.classList.add("light-tool");
+      } else {
+        html.classList.remove("light-tool");
+        html.classList.add("dark");
+      }
+    };
+  }, []);
 
   /* ── Auto-close sidebar at lg breakpoint ── */
   useEffect(() => {
