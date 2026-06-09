@@ -15,3 +15,12 @@
 - SSO Protection desativada (app público / open source)
 - Corrigida ordem do @import Google Fonts antes das diretivas Tailwind
 - Repos originais arquivados: guebly-insta-preview, guebly-zap-transcriber, guebly-text-formatter, guebly-readme-to-pdf
+
+## 2026-06-09 - Melhoria de UI/UX e identidade visual
+
+- Adicionada logo oficial da Guebly (guebly.png 1024x1024) na pasta public
+- Geradas versões otimizadas: logo-192.png (14KB), logo-64.png (3KB), favicon.png (1KB)
+- Home.tsx: substituído placeholder "G" pela logo real da Guebly (logo-192.png)
+- Home.tsx: melhorias visuais — cards com hover colorido por ferramenta, badges atualizados, footer com link GitHub + logo
+- Layout.tsx: adicionada logo (logo-64.png) na barra de navegação de todas as ferramentas
+- index.html: favicon atualizado para logo da Guebly, adicionadas meta tags Open Graph e Twitter Card completas

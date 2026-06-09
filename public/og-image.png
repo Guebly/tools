@@ -1,0 +1,37 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Guebly — Holding de Tecnologia | Soluções Digitais & Branding</title><meta name="description" content="Guebly é uma holding de tecnologia fundada em São Paulo. Desenvolvemos soluções digitais, automações, plataformas SaaS e branding para startups e empresas que querem escalar com inteligência."/><meta name="keywords" content="guebly, holding tecnologia, soluções digitais, automação, SaaS, branding, startup, São Paulo, plataformas digitais, integrações, desenvolvimento de software, guebly holding"/><meta name="author" content="Guebly Holding"/><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/><meta name="theme-color" content="#421565"/><link rel="canonical" href="https://www.guebly.com.br/"/><meta property="og:type" content="website"/><meta property="og:locale" content="pt_BR"/><meta property="og:site_name" content="Guebly"/><meta property="og:url" content="https://www.guebly.com.br/"/><meta property="og:title" content="Guebly — Holding de Tecnologia | Soluções Digitais & Branding"/><meta property="og:description" content="Holding de tecnologia fundada em São Paulo. Soluções digitais, automações, SaaS e branding para empresas que querem crescer com inteligência."/><meta property="og:image" content="https://www.guebly.com.br/og-image.png"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image:alt" content="Guebly — Holding de Tecnologia"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:site" content="@gueblybr"/><meta name="twitter:creator" content="@gueblybr"/><meta name="twitter:title" content="Guebly — Holding de Tecnologia"/><meta name="twitter:description" content="Holding de tecnologia fundada em São Paulo. SaaS, automações e branding para empresas que escalam."/><meta name="twitter:image" content="https://www.guebly.com.br/og-image.png"/><script type="application/ld+json">{
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Guebly",
+      "legalName": "Guebly Holding LTDA",
+      "url": "https://www.guebly.com.br",
+      "logo": "https://www.guebly.com.br/guebly512.png",
+      "foundingDate": "2024",
+      "description": "Guebly é uma holding de tecnologia brasileira que desenvolve soluções digitais, plataformas SaaS, automações inteligentes e branding para startups e empresas em crescimento.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "São Paulo",
+        "addressRegion": "SP",
+        "addressCountry": "BR"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "contato@guebly.com.br",
+        "contactType": "customer support",
+        "availableLanguage": ["Portuguese", "English"]
+      },
+      "sameAs": [
+        "https://www.instagram.com/gueblybr",
+        "https://www.linkedin.com/company/gueblybr",
+        "https://github.com/guebly"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Soluções Guebly",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Desenvolvimento de Software" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Plataformas SaaS" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Automações Inteligentes" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Branding & Identidade Visual" } }
+        ]
+      }
+    }</script><link rel="icon" href="favicon.ico" sizes="any"/><link rel="icon" href="guebly.png" type="image/png"/><link rel="apple-touch-icon" href="guebly.png"/><link rel="manifest" href="/manifest.json"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" crossorigin="anonymous"/><script defer="defer" src="/static/js/main.f9f105e0.js"></script><link href="/static/css/main.e141780a.css" rel="stylesheet"></head><body><noscript>Você precisa habilitar o JavaScript para acessar este site.</noscript><div id="root"></div></body></html>
