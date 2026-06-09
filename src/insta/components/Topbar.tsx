@@ -1,6 +1,7 @@
 
 import React from "react";
-import { Moon, Sun, RotateCcw, Github, Download, Loader2, Save, FolderOpen, Menu, FileText, Presentation } from "lucide-react";
+import { Moon, Sun, RotateCcw, Github, Download, Loader2, Save, FolderOpen, Menu, FileText, Presentation, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import IgIcon from "./IgIcon";
 import type { AppTheme } from "../types";
 
@@ -56,6 +57,21 @@ export default function Topbar({
           <Menu size={16} />
         </button>
 
+        {/* Back to Tools */}
+        <Link
+          to="/"
+          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold
+            border border-slate-200 dark:border-slate-800
+            text-slate-500 dark:text-slate-500
+            hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300
+            transition flex-shrink-0"
+          title="Voltar para Guebly Tools"
+        >
+          <ArrowLeft size={13} />
+          <img src="/logo-64.png" alt="Guebly" className="w-3.5 h-3.5 rounded object-contain" />
+          <span className="hidden md:inline">Tools</span>
+        </Link>
+
         {/* Logo */}
         <div className="flex items-center gap-2 flex-shrink-0">
           <IgIcon size={20} />
@@ -77,9 +93,8 @@ export default function Topbar({
           border border-slate-200 dark:border-slate-800
           hover:bg-slate-50 dark:hover:bg-slate-900 transition-all group"
       >
-        <img src="https://www.guebly.com.br/guebly.png" alt="Guebly"
-          className="w-4 h-4 rounded object-contain"
-          onError={(e: any) => (e.target.style.display = "none")} />
+        <img src="/logo-64.png" alt="Guebly"
+          className="w-4 h-4 rounded object-contain" />
         <span className="text-xs font-bold text-slate-400 dark:text-slate-500
           group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">
           by Guebly

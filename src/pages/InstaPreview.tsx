@@ -394,7 +394,7 @@ export default function InstaPreview() {
             className="relative z-10 flex items-center gap-2 pb-6
               text-[11px] text-slate-400 dark:text-slate-600
               hover:text-slate-600 dark:hover:text-slate-400 transition">
-            <img src="https://www.guebly.com.br/guebly.png" alt=""
+            <img src="/logo-64.png" alt="Guebly"
               className="w-4 h-4 rounded object-contain opacity-60" />
             InstaPreview é open-source · feito pela Guebly
           </a>
