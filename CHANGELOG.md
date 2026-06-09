@@ -10,3 +10,8 @@
 - Integrado **README to PDF**: editor Markdown com live preview, 3 temas PDF (Terminal/Premium/Minimal), formatador social, exportação via `window.print()`
 - Configurado `vercel.json` com SPA rewrites e headers CORS para SharedArrayBuffer
 - Configurado `vite.config.ts` com Web Worker ES module, excludes do @huggingface/transformers e headers CORS de dev
+- Deploy em produção na Vercel: https://tools-guebly.vercel.app
+- Domínio configurado: tools.guebly.com.br (aguardando propagação DNS Cloudflare)
+- SSO Protection desativada (app público / open source)
+- Corrigida ordem do @import Google Fonts antes das diretivas Tailwind
+- Repos originais arquivados: guebly-insta-preview, guebly-zap-transcriber, guebly-text-formatter, guebly-readme-to-pdf

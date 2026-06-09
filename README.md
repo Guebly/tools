@@ -1,5 +1,7 @@
 # Guebly Tools
 
+> **Acesse agora:** [tools.guebly.com.br](https://tools.guebly.com.br)
+
 Hub unificado de ferramentas gratuitas da Guebly. SPA em React + Vite + TypeScript que combina 4 ferramentas independentes em uma única aplicação.
 
 ## Ferramentas incluídas
@@ -26,7 +28,7 @@ Hub unificado de ferramentas gratuitas da Guebly. SPA em React + Vite + TypeScri
 
 ```bash
 # Clone o repositório
-git clone https://github.com/guebly/guebly-tools
+git clone https://github.com/Guebly/tools
 cd guebly-tools
 
 # Instale as dependências
