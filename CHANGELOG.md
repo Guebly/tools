@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-06-09 - Redesign premium da UI/UX
+
+- **Home.tsx** — redesenho completo: navbar topo (logo + badge "tools" + GitHub), hero com logo 80px + gradiente no título, 4 cards 2x2 com atalhos de teclado (1/2/3/4), animações de hover com glow colorido, rodapé minimalista "by Guebly"
+- **Layout.tsx** — adicionada linha de 1px com gradiente IG no topo, toolname com estilo pill/badge, toggle de tema ligeiramente maior (w-9 h-9) e mais visível, link de volta mais refinado
+- **TextFormatter.tsx** — redesenho do layout: seletor de plataforma como 3 abas pill side-by-side (LinkedIn/Instagram/WhatsApp), split de dois painéis ENTRADA/SAÍDA com labels claros, badge de status ATUALIZADA/DESATUALIZADA, controles de divisão movidos para o rodapé do painel de saída
+- **ReadmePdf.tsx** — layout full-height dividido em dois painéis: esquerdo com upload (área dashed), stats pills (palavras/chars/linhas), textarea e syntax tags; direito com abas Preview/Social/HTML, seletor de tema como botões pill, botão exportar PDF fixo no rodapé
+- **ZapTranscriber.tsx** — hero com ícone de microfone grande, dropzone maior e mais convidativa com ícone 72px, badges de features com estilo pill, barra de progresso com gradiente e glow
+- **index.css** — melhorado font-size e line-height base, adicionada classe `.kbd` para badges de teclado, adicionada `.tool-header`, corrigido `html.light-tool body { background: #f4f6f9 }`
+
 ## 2026-06-09 - Versão inicial do hub unificado
 
 - Criado projeto `guebly-tools` com React 18 + Vite + TypeScript + Tailwind CSS v3
