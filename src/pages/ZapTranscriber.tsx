@@ -640,34 +640,27 @@ export default function ZapTranscriber() {
         <div
           style={{
             background: t.heroGradient,
-            paddingTop: "3rem",
-            paddingBottom: "2rem",
+            paddingTop: "3.5rem",
+            paddingBottom: "2.5rem",
             textAlign: "center",
           }}
         >
+          {/* Microphone icon */}
           <div
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: 8,
+              justifyContent: "center",
+              width: 64,
+              height: 64,
+              borderRadius: 18,
               background: t.accentSoft,
               border: `1px solid ${t.accent}30`,
-              borderRadius: 20,
-              padding: "5px 14px",
               marginBottom: 20,
+              fontSize: 28,
             }}
           >
-            <span
-              style={{
-                fontSize: "0.7rem",
-                fontWeight: 700,
-                color: t.accent,
-                letterSpacing: "0.04em",
-                textTransform: "uppercase",
-              }}
-            >
-              ✦ Open Source · 100% gratuito
-            </span>
+            🎙️
           </div>
 
           <h1
@@ -677,7 +670,7 @@ export default function ZapTranscriber() {
               letterSpacing: "-0.045em",
               lineHeight: 1.1,
               maxWidth: 760,
-              margin: "0 auto",
+              margin: "0 auto 16px",
             }}
           >
             Transcreva áudios e vídeos
@@ -688,10 +681,10 @@ export default function ZapTranscriber() {
           <p
             style={{
               color: t.text2,
-              fontSize: "1rem",
-              lineHeight: 1.6,
-              maxWidth: 660,
-              margin: "16px auto 0",
+              fontSize: "0.95rem",
+              lineHeight: 1.65,
+              maxWidth: 580,
+              margin: "0 auto 20px",
             }}
           >
             Nenhum dado é enviado para servidores. O modelo de IA roda localmente
@@ -699,13 +692,37 @@ export default function ZapTranscriber() {
           </p>
 
           <div
-            style={{ color: t.text3, fontSize: "0.78rem", fontWeight: 500, display: "flex", justifyContent: "center", gap: 16, marginTop: 16 }}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
           >
-            {["🔒 100% privado", "⚡ Sem cadastro", "🌐 Multi-idioma"].map(
-              (item) => (
-                <span key={item}>{item}</span>
-              ),
-            )}
+            {[
+              { label: "100% privado", icon: "🔒" },
+              { label: "Sem cadastro", icon: "⚡" },
+              { label: "Multi-idioma", icon: "🌐" },
+            ].map(item => (
+              <span
+                key={item.label}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 5,
+                  fontSize: "0.72rem",
+                  fontWeight: 600,
+                  padding: "4px 10px",
+                  borderRadius: 20,
+                  background: t.accentSoft,
+                  border: `1px solid ${t.accent}25`,
+                  color: t.text2,
+                }}
+              >
+                {item.icon} {item.label}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -792,8 +809,8 @@ export default function ZapTranscriber() {
             }}
             style={{
               border: `2px dashed ${dragOver ? t.accent : t.border}`,
-              borderRadius: queue.length > 0 ? 12 : 20,
-              padding: queue.length > 0 ? "0.85rem 1.5rem" : "3rem 2.5rem",
+              borderRadius: queue.length > 0 ? 14 : 22,
+              padding: queue.length > 0 ? "1rem 1.5rem" : "3.5rem 2.5rem",
               textAlign: "center",
               cursor: "pointer",
               background: dragOver
@@ -801,29 +818,45 @@ export default function ZapTranscriber() {
                 : queue.length > 0
                   ? "transparent"
                   : t.card,
-              transition: "all 0.3s",
+              transition: "all 0.25s ease",
               boxShadow: queue.length > 0 ? "none" : t.shadow,
               marginBottom: 16,
             }}
           >
             {queue.length === 0 ? (
               <>
-                <div style={{ fontSize: 56, marginBottom: 16 }}>
-                  {dragOver ? "📥" : "🎤"}
+                {/* Large mic / drop icon */}
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 72,
+                    height: 72,
+                    borderRadius: 20,
+                    background: dragOver ? t.accentGlow : t.accentSoft,
+                    border: `1.5px solid ${t.accent}30`,
+                    fontSize: 32,
+                    marginBottom: 20,
+                    transition: "all 0.25s",
+                  }}
+                >
+                  {dragOver ? "📥" : "🎙️"}
                 </div>
-                <p style={{ fontWeight: 700, fontSize: "1.1rem", marginBottom: 8 }}>
-                  Arraste o áudio ou vídeo aqui
+
+                <p style={{ fontWeight: 800, fontSize: "1.15rem", marginBottom: 8, letterSpacing: "-0.02em" }}>
+                  {dragOver ? "Solte aqui" : "Arraste o áudio ou vídeo aqui"}
                 </p>
-                <p style={{ color: t.text2, fontSize: "0.85rem", marginBottom: 16 }}>
+                <p style={{ color: t.text2, fontSize: "0.85rem", marginBottom: 20, lineHeight: 1.5 }}>
                   ou clique para selecionar — múltiplos arquivos suportados
                 </p>
                 <div
                   style={{
                     display: "inline-flex",
-                    gap: 6,
+                    gap: 5,
                     flexWrap: "wrap",
                     justifyContent: "center",
-                    maxWidth: 440,
+                    maxWidth: 460,
                   }}
                 >
                   {[".ogg",".opus",".mp3",".m4a",".wav",".webm",".mp4",".mov",".avi",".mkv"].map((ext) => (
@@ -832,10 +865,12 @@ export default function ZapTranscriber() {
                       style={{
                         background: t.accentSoft,
                         color: t.text2,
-                        fontSize: "0.7rem",
-                        fontWeight: 600,
-                        padding: "3px 8px",
-                        borderRadius: 5,
+                        fontSize: "0.68rem",
+                        fontWeight: 700,
+                        padding: "3px 9px",
+                        borderRadius: 6,
+                        letterSpacing: "0.02em",
+                        border: `1px solid ${t.accent}20`,
                       }}
                     >
                       {ext}
@@ -1107,7 +1142,7 @@ export default function ZapTranscriber() {
 
                 {/* Progress bar */}
                 {itemBusy && (
-                  <div style={{ height: 4, background: t.bg2 }}>
+                  <div style={{ height: 3, background: t.bg2 }}>
                     <div
                       style={{
                         height: "100%",
@@ -1115,13 +1150,14 @@ export default function ZapTranscriber() {
                           item.status === "transcribing" && item.progress === 0
                             ? "100%"
                             : `${item.progress}%`,
-                        background: t.accent,
-                        transition: item.progress > 0 ? "width 0.5s" : "none",
+                        background: `linear-gradient(90deg, ${t.accent}cc, ${t.accent})`,
+                        transition: item.progress > 0 ? "width 0.5s ease" : "none",
                         animation:
                           item.status === "transcribing" && item.progress === 0
                             ? "pulse 1.5s infinite"
                             : "none",
                         borderRadius: 2,
+                        boxShadow: `0 0 8px ${t.accentGlow}`,
                       }}
                     />
                   </div>

@@ -7,10 +7,10 @@ import {
   Linkedin,
   Instagram,
   MessageCircle,
-  Info,
-  AlertCircle,
   CheckCircle,
   XCircle,
+  AlertCircle,
+  Scissors,
 } from "lucide-react";
 import Layout from "../components/Layout";
 import {
@@ -28,19 +28,19 @@ const PLATFORM: Record<
 > = {
   linkedin: {
     label: "LinkedIn",
-    icon: <Linkedin size={18} />,
-    helper: "LinkedIn não aplica markdown. Aqui o destaque é visual (Unicode).",
+    icon: <Linkedin size={15} />,
+    helper: "LinkedIn não aplica markdown. O destaque é visual (Unicode).",
     maxDefault: 3500,
   },
   instagram: {
     label: "Instagram",
-    icon: <Instagram size={18} />,
+    icon: <Instagram size={15} />,
     helper: "Instagram não aplica markdown. O destaque é visual (Unicode).",
     maxDefault: 2200,
   },
   whatsapp: {
     label: "WhatsApp",
-    icon: <MessageCircle size={18} />,
+    icon: <MessageCircle size={15} />,
     helper: "WhatsApp suporta *negrito* e _itálico_. Aqui a conversão é real.",
     maxDefault: 3500,
   },
@@ -69,67 +69,37 @@ function useToast() {
 
 function ToastContainer({ toasts }: { toasts: ToastType[] }) {
   return (
-    <div className="fixed bottom-24 right-6 z-[9999] flex flex-col gap-2 pointer-events-none w-[92%] md:w-auto">
+    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-2 pointer-events-none w-[92%] md:w-auto">
       {toasts.map((t) => (
         <div
           key={t.id}
           className={[
             "pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border shadow-2xl backdrop-blur-md",
             t.type === "success"
-              ? "bg-green-500/10 border-green-500/50 text-green-400"
+              ? "bg-green-500/10 border-green-500/30 text-green-400"
               : t.type === "error"
-              ? "bg-red-500/10 border-red-500/50 text-red-400"
-              : "bg-blue-500/10 border-blue-500/50 text-blue-400",
+              ? "bg-red-500/10 border-red-500/30 text-red-400"
+              : "bg-blue-500/10 border-blue-500/30 text-blue-400",
           ].join(" ")}
         >
           {t.type === "success" ? (
-            <CheckCircle size={18} />
+            <CheckCircle size={16} />
           ) : t.type === "error" ? (
-            <XCircle size={18} />
+            <XCircle size={16} />
           ) : (
-            <AlertCircle size={18} />
+            <AlertCircle size={16} />
           )}
-          <span className="text-sm font-bold">{t.message}</span>
+          <span className="text-sm font-semibold">{t.message}</span>
         </div>
       ))}
     </div>
   );
 }
 
-function Badge({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      className="text-[10px] font-black px-3 py-1.5 rounded-full border tracking-widest transition whitespace-nowrap"
-      style={{
-        background: "var(--surface)",
-        borderColor: "var(--border)",
-        color: "var(--text2)",
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
-function Tag({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      className="px-3 py-1.5 rounded-full text-[10px] font-bold border whitespace-nowrap"
-      style={{
-        background: "var(--surface2)",
-        borderColor: "var(--border2)",
-        color: "var(--muted)",
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
 export default function TextFormatter() {
   const { toasts, addToast } = useToast();
   const { theme: appTheme } = useTheme();
-  const isDark = appTheme === 'dark';
+  const isDark = appTheme === "dark";
 
   const [platform, setPlatform] = useState<PlatformKey>("linkedin");
   const [input, setInput] = useState("");
@@ -179,334 +149,284 @@ export default function TextFormatter() {
     }
   }
 
+  // Style helpers
+  const borderColor = isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)";
+  const surfaceBg = isDark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.9)";
+  const inputBg = isDark ? "rgba(0,0,0,0.35)" : "rgba(0,0,0,0.03)";
+
   return (
     <Layout toolName="Text Formatter">
       <div
-        className="min-h-screen overflow-x-hidden"
-        style={{ background: "var(--bg)", color: "var(--text)" }}
+        style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}
       >
         <ToastContainer toasts={toasts} />
 
-        {/* Background glows */}
+        {/* Subtle background glows */}
         <div className="pointer-events-none fixed inset-0 -z-10">
           <div
-            className="absolute top-[-180px] right-[-180px] w-[520px] h-[520px] rounded-full blur-[140px]"
-            style={{ background: "rgba(59,130,246,0.06)" }}
+            className="absolute top-[-200px] right-[-200px] w-[500px] h-[500px] rounded-full"
+            style={{ background: "rgba(75,139,255,0.05)", filter: "blur(130px)" }}
           />
           <div
-            className="absolute bottom-[-220px] left-[-220px] w-[560px] h-[560px] rounded-full blur-[160px]"
-            style={{ background: "rgba(139,92,246,0.05)" }}
+            className="absolute bottom-[-200px] left-[-200px] w-[500px] h-[500px] rounded-full"
+            style={{ background: "rgba(139,92,246,0.04)", filter: "blur(130px)" }}
           />
         </div>
 
-        <div className="relative z-10">
-          {/* Sub-header controls */}
-          <header
-            className="sticky top-0 z-40 border-b shadow-2xl backdrop-blur-xl"
-            style={{
-              background: isDark ? "rgba(10,10,10,0.9)" : "rgba(244,246,249,0.9)",
-              borderColor: "var(--border)",
-            }}
-          >
-            <div className="px-4 sm:px-6 md:px-10 py-4 max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
-              {/* Left: badges */}
-              <div className="flex items-center gap-4 min-w-0">
-                <div className="leading-none min-w-0">
-                  <h1 className="text-base sm:text-lg md:text-xl font-black tracking-tighter opacity-90 whitespace-nowrap">
-                    TEXT<span className="text-blue-500">.FORMATTER</span>
-                  </h1>
-                  <div className="mt-2 flex flex-wrap gap-2 items-center">
-                    <Badge>OPEN-SOURCE</Badge>
-                    <Badge>SEM COLETA</Badge>
-                    <Badge>SÓ FORMATAÇÃO</Badge>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right: controls */}
-              <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center justify-start lg:justify-end gap-2 sm:gap-3">
-                {/* Platform select */}
-                <div
-                  className="flex items-center justify-between sm:justify-start gap-2 px-4 py-3 rounded-2xl border w-full sm:w-auto"
+        {/* ── Platform Tabs + Action buttons ── */}
+        <div
+          className="sticky top-0 z-40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3 border-b backdrop-blur-xl"
+          style={{
+            background: isDark ? "rgba(10,10,10,0.92)" : "rgba(244,246,249,0.92)",
+            borderColor: borderColor,
+          }}
+        >
+          {/* Platform tab pills */}
+          <div className="flex items-center gap-1.5">
+            {(Object.keys(PLATFORM) as PlatformKey[]).map((key) => {
+              const p = PLATFORM[key];
+              const active = platform === key;
+              return (
+                <button
+                  key={key}
+                  onClick={() => setPlatform(key)}
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all duration-150"
                   style={{
-                    background: "var(--surface)",
-                    borderColor: "var(--border)",
+                    background: active
+                      ? isDark ? "rgba(255,255,255,0.09)" : "rgba(0,0,0,0.07)"
+                      : "transparent",
+                    border: `1px solid ${active ? borderColor : "transparent"}`,
+                    color: active ? "var(--text)" : "var(--muted)",
                   }}
                 >
-                  <span
-                    className="text-[10px] font-bold uppercase tracking-widest whitespace-nowrap"
-                    style={{ color: "var(--muted)" }}
-                  >
-                    PLATAFORMA
-                  </span>
+                  {p.icon}
+                  {p.label}
+                </button>
+              );
+            })}
+          </div>
 
-                  <div className="relative flex-1 sm:flex-none min-w-0">
-                    <select
-                      value={platform}
-                      onChange={(e) => setPlatform(e.target.value as PlatformKey)}
-                      className="w-full sm:w-auto appearance-none bg-transparent border rounded-xl px-4 py-2 pr-9 text-sm font-black outline-none transition"
-                      style={{
-                        borderColor: "var(--border)",
-                        color: "var(--text)",
-                        background: "var(--surface)",
-                      }}
-                    >
-                      <option value="linkedin">LinkedIn</option>
-                      <option value="instagram">Instagram</option>
-                      <option value="whatsapp">WhatsApp</option>
-                    </select>
+          {/* Action buttons */}
+          <div className="flex items-center gap-2">
+            {/* Platform helper */}
+            <span
+              className="text-xs hidden lg:block mr-2"
+              style={{ color: "var(--muted)", maxWidth: 260 }}
+            >
+              {PLATFORM[platform].helper}
+            </span>
 
-                    <div
-                      className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
-                      style={{ color: "var(--muted)" }}
-                    >
-                      {PLATFORM[platform].icon}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Buttons */}
-                <div className="grid grid-cols-2 gap-2 w-full sm:w-auto">
-                  <button
-                    onClick={onClear}
-                    className="w-full px-4 sm:px-5 py-3 rounded-2xl font-black text-[11px] sm:text-xs tracking-widest transition active:scale-95 flex items-center justify-center gap-2 border"
-                    style={{
-                      background: "var(--surface)",
-                      borderColor: "var(--border)",
-                      color: "var(--text2)",
-                    }}
-                  >
-                    <Eraser size={16} /> <span className="truncate">LIMPAR</span>
-                  </button>
-
-                  <button
-                    onClick={onExecute}
-                    className="w-full relative px-4 sm:px-5 py-3 rounded-2xl font-black text-[11px] sm:text-xs tracking-widest flex items-center justify-center gap-2 border transition active:scale-95 hover:-translate-y-[1px] select-none overflow-hidden"
-                    style={{
-                      background: "var(--accent)",
-                      borderColor: "var(--accent)",
-                      color: "#fff",
-                      boxShadow: "0 4px 18px var(--accent-glow)",
-                    }}
-                  >
-                    <span className="relative flex items-center gap-2">
-                      <PlayCircle size={16} />
-                      <span className="truncate">EXECUTAR</span>
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </header>
-
-          <main className="p-4 sm:p-6 md:p-12 max-w-[1920px] mx-auto space-y-6 md:space-y-8">
-            <section
-              className="border rounded-[26px] md:rounded-[30px] p-4 sm:p-6 md:p-8 shadow-2xl relative overflow-hidden"
+            <button
+              onClick={onClear}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all border"
               style={{
-                background: "var(--surface)",
-                borderColor: "var(--border)",
+                background: "transparent",
+                borderColor: borderColor,
+                color: "var(--text2)",
               }}
             >
-              <div
-                className="absolute top-0 left-0 w-full h-1 opacity-50"
+              <Eraser size={13} /> CLR
+            </button>
+
+            <button
+              onClick={onExecute}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all"
+              style={{
+                background: "var(--accent)",
+                border: "1px solid var(--accent)",
+                color: "#fff",
+                boxShadow: "0 2px 14px var(--accent-glow)",
+              }}
+            >
+              <PlayCircle size={14} /> EXECUTAR
+            </button>
+          </div>
+        </div>
+
+        {/* ── Main two-column editor ── */}
+        <div
+          className="grid grid-cols-1 xl:grid-cols-2"
+          style={{ minHeight: "calc(100vh - 120px)" }}
+        >
+          {/* ── INPUT PANEL ── */}
+          <div
+            className="flex flex-col"
+            style={{ borderRight: `1px solid ${borderColor}` }}
+          >
+            {/* Panel header */}
+            <div
+              className="flex items-center justify-between px-5 py-3 border-b"
+              style={{ borderColor: borderColor }}
+            >
+              <span
+                className="text-[10px] font-black tracking-widest uppercase"
+                style={{ color: "var(--muted)" }}
+              >
+                ENTRADA
+              </span>
+              <span
+                className="text-[10px] font-mono"
+                style={{ color: "var(--muted)" }}
+              >
+                {input.length.toLocaleString()} chars
+              </span>
+            </div>
+
+            {/* Textarea */}
+            <div className="flex-1 relative">
+              <textarea
+                className="w-full h-full absolute inset-0 px-5 py-4 text-xs font-mono resize-none outline-none"
                 style={{
-                  background: "linear-gradient(90deg, rgb(37,99,235), rgb(147,51,234), rgb(37,99,235))",
+                  background: inputBg,
+                  color: "var(--text)",
+                  border: "none",
+                  minHeight: 380,
+                }}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Cole aqui o texto em Markdown ou gerado por IA..."
+              />
+            </div>
+
+            {/* Syntax tags */}
+            <div
+              className="flex flex-wrap gap-1.5 px-5 py-3 border-t"
+              style={{ borderColor: borderColor, background: surfaceBg }}
+            >
+              {["# ## ###", "**bold**", "*itálico*", "> quote", "| tabela |"].map((tag) => (
+                <span key={tag} className="syntax-tag">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* ── OUTPUT PANEL ── */}
+          <div className="flex flex-col">
+            {/* Panel header */}
+            <div
+              className="flex items-center justify-between px-5 py-3 border-b"
+              style={{ borderColor: borderColor }}
+            >
+              <div className="flex items-center gap-2.5">
+                <span
+                  className="text-[10px] font-black tracking-widest uppercase"
+                  style={{ color: "var(--muted)" }}
+                >
+                  SAÍDA · {PLATFORM[platform].label}
+                </span>
+                {/* Status badge */}
+                <span
+                  className="text-[10px] font-bold px-2 py-0.5 rounded-md border"
+                  style={{
+                    borderColor: isStale ? borderColor : "rgba(34,197,94,0.3)",
+                    background: isStale ? "transparent" : "rgba(34,197,94,0.08)",
+                    color: isStale ? "var(--muted)" : "rgb(34,197,94)",
+                  }}
+                >
+                  {isStale ? "DESATUALIZADA" : "ATUALIZADA"}
+                </span>
+              </div>
+
+              {/* Copy buttons */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => copyText(chunks[0] || "", "1º bloco copiado.")}
+                  disabled={!executed}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all border"
+                  style={{
+                    background: "transparent",
+                    borderColor: borderColor,
+                    color: "var(--text2)",
+                    opacity: !executed ? 0.4 : 1,
+                  }}
+                >
+                  <Copy size={12} /> Copiar 1º
+                </button>
+                <button
+                  onClick={() => copyText(executed, "Texto completo copiado.")}
+                  disabled={!executed}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all border"
+                  style={{
+                    background: "transparent",
+                    borderColor: borderColor,
+                    color: "var(--text2)",
+                    opacity: !executed ? 0.4 : 1,
+                  }}
+                >
+                  <Copy size={12} /> Copiar Tudo
+                </button>
+              </div>
+            </div>
+
+            {/* Textarea */}
+            <div className="flex-1 relative">
+              <textarea
+                className="w-full h-full absolute inset-0 px-5 py-4 text-sm resize-none outline-none font-unicode-safe"
+                style={{
+                  background: inputBg,
+                  color: "var(--text)",
+                  border: "none",
+                  minHeight: 380,
+                }}
+                value={outText}
+                readOnly
+                placeholder={isStale && input ? "Clique em EXECUTAR para ver a saída..." : "Clique em EXECUTAR..."}
+              />
+            </div>
+
+            {/* Split controls — bottom of output panel */}
+            <div
+              className="flex items-center gap-3 px-5 py-3 border-t"
+              style={{ borderColor: borderColor, background: surfaceBg }}
+            >
+              <Scissors size={13} style={{ color: "var(--muted)", flexShrink: 0 }} />
+              <label
+                className="flex items-center gap-2 text-xs font-semibold cursor-pointer"
+                style={{ color: "var(--muted)" }}
+              >
+                <input
+                  type="checkbox"
+                  checked={splitEnabled}
+                  onChange={(e) => setSplitEnabled(e.target.checked)}
+                  className="accent-purple-500"
+                />
+                Dividir em
+              </label>
+              <input
+                value={maxLen}
+                onChange={(e) => setMaxLen(Number(e.target.value || 0))}
+                type="number"
+                min={200}
+                max={10000}
+                disabled={!splitEnabled}
+                className="w-20 rounded-lg px-2.5 py-1.5 text-xs font-mono font-bold outline-none border transition-opacity"
+                style={{
+                  background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)",
+                  borderColor: borderColor,
+                  color: "var(--text)",
+                  opacity: splitEnabled ? 1 : 0.4,
                 }}
               />
-
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-3">
-                <div className="min-w-0">
-                  <h2 className="text-lg sm:text-xl md:text-2xl font-black flex items-center gap-3">
-                    {PLATFORM[platform].icon} Central de Formatação
-                  </h2>
-                  <p
-                    className="text-xs md:text-sm mt-1"
-                    style={{ color: "var(--text2)" }}
-                  >
-                    Cole o texto (Markdown/IA) e transforme para o que o app
-                    realmente aceita. {PLATFORM[platform].helper}
-                  </p>
-                </div>
-
-                <div
-                  className="w-full md:w-auto flex items-center justify-between md:justify-start gap-3 px-4 py-3 rounded-2xl border"
-                  style={{
-                    background: "var(--surface2)",
-                    borderColor: "var(--border)",
-                  }}
-                  title="DIVIDIR: quebra a saída em blocos com no máximo X caracteres."
-                >
-                  <label
-                    className="flex items-center gap-2 text-xs font-black whitespace-nowrap"
-                    style={{ color: "var(--muted)" }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={splitEnabled}
-                      onChange={(e) => setSplitEnabled(e.target.checked)}
-                      className="accent-purple-500"
-                    />
-                    DIVIDIR
-                  </label>
-
-                  <input
-                    value={maxLen}
-                    onChange={(e) => setMaxLen(Number(e.target.value || 0))}
-                    type="number"
-                    min={200}
-                    max={10000}
-                    className="w-24 sm:w-28 rounded-xl px-3 py-2 text-sm font-black outline-none transition border"
-                    style={{
-                      background: "var(--surface)",
-                      borderColor: "var(--border)",
-                      color: "var(--text)",
-                    }}
-                    disabled={!splitEnabled}
-                  />
-
-                  <span
-                    className="hidden sm:inline text-[10px] font-bold whitespace-nowrap"
-                    style={{ color: "var(--muted)" }}
-                  >
-                    quebra em partes
+              <span className="text-xs" style={{ color: "var(--muted)" }}>
+                chars
+                {chunks.length > 1 && (
+                  <span className="ml-2" style={{ color: "var(--accent)" }}>
+                    → {chunks.length} blocos
                   </span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
-                {/* Input */}
-                <div
-                  className="border p-4 sm:p-6 rounded-2xl shadow-lg"
-                  style={{
-                    background: "var(--surface2)",
-                    borderColor: "var(--border2)",
-                  }}
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-bold text-sm tracking-wide uppercase">Entrada</h3>
-                    <span
-                      className="text-[10px] font-mono"
-                      style={{ color: "var(--muted)" }}
-                    >
-                      {input.length.toLocaleString()} chars
-                    </span>
-                  </div>
-
-                  <textarea
-                    className="w-full min-h-[360px] sm:min-h-[420px] rounded-xl px-4 py-4 text-xs font-mono outline-none transition resize-y border"
-                    style={{
-                      background: "var(--bg2)",
-                      borderColor: "var(--border2)",
-                      color: "var(--text)",
-                    }}
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Cole aqui..."
-                  />
-
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Tag># ## ###</Tag>
-                    <Tag>**negrito**</Tag>
-                    <Tag>*itálico*</Tag>
-                    <Tag>&gt; blockquote</Tag>
-                    <Tag>| tabela |</Tag>
-                  </div>
-                </div>
-
-                {/* Output */}
-                <div
-                  className="border p-4 sm:p-6 rounded-2xl shadow-lg"
-                  style={{
-                    background: "var(--surface2)",
-                    borderColor: "var(--border2)",
-                  }}
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-                    <h3 className="font-bold text-sm tracking-wide uppercase flex items-center gap-2 min-w-0">
-                      <span className="truncate">
-                        Saída • {PLATFORM[platform].label}
-                      </span>
-                      <span
-                        className="text-[10px] font-black px-2 py-1 rounded border shrink-0"
-                        style={{
-                          borderColor: isStale
-                            ? "var(--border)"
-                            : "rgba(34,197,94,0.30)",
-                          background: isStale
-                            ? "var(--surface)"
-                            : "rgba(34,197,94,0.10)",
-                          color: isStale ? "var(--muted)" : "rgb(34,197,94)",
-                        }}
-                      >
-                        {isStale ? "PRECISA EXECUTAR" : "ATUALIZADA"}
-                      </span>
-                    </h3>
-
-                    <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
-                      <button
-                        onClick={() => copyText(chunks[0] || "", "Copiado (1º bloco).")}
-                        className="w-full sm:w-auto px-3 py-2 rounded-xl text-[11px] font-black transition flex items-center justify-center gap-2 border"
-                        style={{
-                          background: "var(--surface)",
-                          borderColor: "var(--border)",
-                          color: "var(--text)",
-                        }}
-                        disabled={!executed}
-                      >
-                        <Copy size={14} /> <span className="truncate">1º</span>
-                      </button>
-
-                      <button
-                        onClick={() => copyText(executed, "Copiado (inteiro).")}
-                        className="w-full sm:w-auto px-3 py-2 rounded-xl text-[11px] font-black transition flex items-center justify-center gap-2 border"
-                        style={{
-                          background: "var(--surface)",
-                          borderColor: "var(--border)",
-                          color: "var(--text)",
-                        }}
-                        disabled={!executed}
-                      >
-                        <Copy size={14} /> <span className="truncate">INTEIRO</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <textarea
-                    className="w-full min-h-[360px] sm:min-h-[420px] rounded-xl px-4 py-4 text-sm outline-none transition resize-y border font-unicode-safe"
-                    style={{
-                      background: "var(--bg2)",
-                      borderColor: "var(--border2)",
-                      color: "var(--text)",
-                    }}
-                    value={outText}
-                    readOnly
-                    placeholder="Clique em EXECUTAR..."
-                  />
-
-                  <div
-                    className="mt-4 flex items-start gap-3 text-[11px]"
-                    style={{ color: "var(--muted)" }}
-                  >
-                    <div className="mt-0.5">
-                      <Info size={14} />
-                    </div>
-                    <p className="leading-relaxed">
-                      Se você ver "□", é falta de glyph Unicode na fonte do
-                      sistema. A saída aqui usa uma stack de fontes mais segura.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <footer
-              className="text-center text-[10px] font-mono py-8"
-              style={{ color: "var(--muted)" }}
-            >
-              © {new Date().getFullYear()} Guebly • Open-source tool • Sem coleta de dados
-            </footer>
-          </main>
+                )}
+              </span>
+            </div>
+          </div>
         </div>
+
+        {/* Footer */}
+        <footer
+          className="text-center text-[10px] font-mono py-6 border-t"
+          style={{ borderColor: borderColor, color: "var(--muted)" }}
+        >
+          © {new Date().getFullYear()} Guebly · Open-source · Sem coleta de dados
+        </footer>
       </div>
     </Layout>
   );

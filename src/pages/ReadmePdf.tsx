@@ -4,7 +4,7 @@ import {
   Upload, Download, Copy, Trash2, Eye, Code2, CheckCircle,
   AlertCircle, Info, Github, X, Terminal, Globe, Shield,
   Star, FileText, Linkedin, Instagram, MessageCircle,
-  ChevronDown, Scissors,
+  Scissors,
 } from "lucide-react";
 import Layout from "../components/Layout";
 import { parseMarkdown } from "../lib/markdown";
@@ -20,15 +20,15 @@ type ToastType = "success" | "error" | "info";
 interface Toast { id: number; type: ToastType; msg: string; }
 
 const PLATFORMS: Record<Platform, { label: string; maxLen: number; icon: React.ReactNode }> = {
-  linkedin:  { label: "LinkedIn",  maxLen: 3500, icon: <Linkedin  size={12} /> },
-  instagram: { label: "Instagram", maxLen: 2200, icon: <Instagram size={12} /> },
-  whatsapp:  { label: "WhatsApp",  maxLen: 3500, icon: <MessageCircle size={12} /> },
+  linkedin:  { label: "LinkedIn",  maxLen: 3500, icon: <Linkedin  size={13} /> },
+  instagram: { label: "Instagram", maxLen: 2200, icon: <Instagram size={13} /> },
+  whatsapp:  { label: "WhatsApp",  maxLen: 3500, icon: <MessageCircle size={13} /> },
 };
 
-const DOC_THEMES: Record<DocTheme, { label: string }> = {
-  terminal: { label: "Terminal" },
-  premium:  { label: "Premium" },
-  minimal:  { label: "Minimal" },
+const DOC_THEMES: Record<DocTheme, { label: string; icon: React.ReactNode }> = {
+  terminal: { label: "Terminal", icon: <Terminal size={12} /> },
+  premium:  { label: "Premium",  icon: <Star size={12} /> },
+  minimal:  { label: "Minimal",  icon: <Eye size={12} /> },
 };
 
 const DEMO_MD = `# guebly.pdf
@@ -90,11 +90,8 @@ function ToastStack({ toasts }: { toasts: Toast[] }) {
         <div
           key={t.id}
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "10px 16px",
-            borderRadius: 10,
+            display: "flex", alignItems: "center", gap: 8,
+            padding: "10px 16px", borderRadius: 10,
             background: "rgba(20,20,20,0.95)",
             border: `1px solid ${c[t.type]}40`,
             backdropFilter: "blur(12px)",
@@ -104,42 +101,6 @@ function ToastStack({ toasts }: { toasts: Toast[] }) {
         >
           {icons[t.type]}
           <span style={{ color: c[t.type], fontSize: 13, fontWeight: 600 }}>{t.msg}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Stats({ md, isDark }: { md: string; isDark: boolean }) {
-  const words      = useMemo(() => md.trim().split(/\s+/).filter(Boolean).length, [md]);
-  const chars      = md.length;
-  const lines      = md.split("\n").length;
-  const headings   = (md.match(/^#{1,6}\s/gm) ?? []).length;
-  const codeBlocks = Math.floor(((md.match(/```/g) ?? []).length) / 2);
-
-  const items = [
-    { num: words.toLocaleString(),  label: "Palavras" },
-    { num: chars.toLocaleString(),  label: "Chars"    },
-    { num: lines.toLocaleString(),  label: "Linhas"   },
-    { num: headings,                label: "Títulos"  },
-    { num: codeBlocks,              label: "Blocos"   },
-  ];
-
-  return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(85px, 1fr))", gap: 8 }}>
-      {items.map(s => (
-        <div
-          key={s.label}
-          style={{
-            background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
-            border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
-            borderRadius: 10,
-            padding: "10px 12px",
-            textAlign: "center",
-          }}
-        >
-          <div style={{ fontSize: 18, fontWeight: 800, color: isDark ? "#ffffff" : "#0f172a" }}>{s.num}</div>
-          <div style={{ fontSize: 11, color: isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)", marginTop: 2 }}>{s.label}</div>
         </div>
       ))}
     </div>
@@ -209,85 +170,13 @@ function getPdfStyles(docTheme: DocTheme): string {
   ` + footer;
 }
 
-// Style factories — accept isDark to support theming
-const makeCardStyle = (isDark: boolean): React.CSSProperties => ({
-  background: isDark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.85)",
-  border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
-  borderRadius: 16,
-  overflow: "hidden",
-});
-
-const makePanelHeaderStyle = (isDark: boolean): React.CSSProperties => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: "12px 16px",
-  borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
-  gap: 8,
-  flexWrap: "wrap",
-});
-
-const makeBtnStyle = (isDark: boolean, primary?: boolean, danger?: boolean): React.CSSProperties => ({
-  display: "flex",
-  alignItems: "center",
-  gap: 5,
-  padding: "6px 12px",
-  borderRadius: 8,
-  border: `1px solid ${danger ? "rgba(239,68,68,0.4)" : isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-  background: primary ? "#1A56DB" : danger ? "rgba(239,68,68,0.1)" : isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
-  color: primary ? "#fff" : danger ? "#ef4444" : isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)",
-  fontSize: 12,
-  fontWeight: 600,
-  cursor: "pointer",
-  fontFamily: "inherit",
-  transition: "all 0.2s",
-  whiteSpace: "nowrap" as const,
-});
-
-const makeTabGroupStyle = (isDark: boolean): React.CSSProperties => ({
-  display: "flex",
-  border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
-  borderRadius: 8,
-  overflow: "hidden",
-});
-
-const makeTabStyle = (isDark: boolean, active: boolean): React.CSSProperties => ({
-  display: "flex",
-  alignItems: "center",
-  gap: 4,
-  padding: "6px 12px",
-  fontSize: 12,
-  fontWeight: 600,
-  cursor: "pointer",
-  border: "none",
-  background: active ? "#1A56DB" : "transparent",
-  color: active ? "#fff" : isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)",
-  fontFamily: "inherit",
-  transition: "all 0.2s",
-});
-
-const makeBadgeStyle = (isDark: boolean): React.CSSProperties => ({
-  display: "inline-flex",
-  alignItems: "center",
-  gap: 4,
-  padding: "3px 8px",
-  borderRadius: 6,
-  border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
-  background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
-  color: isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)",
-  fontSize: 10,
-  fontWeight: 600,
-});
-
 export default function ReadmePdf() {
-  const { theme: appTheme } = useTheme()
-  const isDark = appTheme === 'dark'
-  const cardStyle = makeCardStyle(isDark)
-  const panelHeaderStyle = makePanelHeaderStyle(isDark)
-  const btnStyle = (primary?: boolean, danger?: boolean) => makeBtnStyle(isDark, primary, danger)
-  const tabGroupStyle = makeTabGroupStyle(isDark)
-  const tabStyle = (active: boolean) => makeTabStyle(isDark, active)
-  const badgeStyle = makeBadgeStyle(isDark)
+  const { theme: appTheme } = useTheme();
+  const isDark = appTheme === "dark";
+
+  const bd = isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)";
+  const surfBg = isDark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.9)";
+  const inputBg = isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.03)";
 
   const [md, setMd]               = useState(DEMO_MD);
   const [rightTab, setRightTab]   = useState<RightTab>("preview");
@@ -312,6 +201,11 @@ export default function ReadmePdf() {
   const chunks = useMemo(() =>
     splitEnabled ? splitByMaxLen(socialText, maxLen || 3500) : [socialText],
   [socialText, splitEnabled, maxLen]);
+
+  // Stats
+  const words      = useMemo(() => md.trim().split(/\s+/).filter(Boolean).length, [md]);
+  const chars      = md.length;
+  const lines      = md.split("\n").length;
 
   const onDragOver  = useCallback((e: React.DragEvent) => { e.preventDefault(); setDragging(true); }, []);
   const onDragLeave = useCallback(() => setDragging(false), []);
@@ -360,212 +254,293 @@ export default function ReadmePdf() {
   }, [htmlPreview, docTheme, filename, toast]);
 
   return (
-    <Layout toolName="README to PDF">
-      <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <Layout toolName="README to PDF" fullHeight>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          background: "var(--bg)",
+          color: "var(--text)",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}
+      >
         <ToastStack toasts={toasts} />
         <input ref={fileRef} type="file" accept=".md,.txt,.markdown" style={{ display: "none" }} onChange={loadFile} />
 
-        {/* Background blobs */}
-        <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
-          <div style={{ position: "absolute", top: -300, right: -200, width: 600, height: 600, borderRadius: "50%", opacity: 0.3, background: "radial-gradient(circle, rgba(26,86,219,0.2) 0%, transparent 70%)" }} />
-          <div style={{ position: "absolute", bottom: -200, left: -150, width: 500, height: 500, borderRadius: "50%", opacity: 0.2, background: "radial-gradient(circle, rgba(126,58,242,0.2) 0%, transparent 70%)" }} />
-        </div>
+        {/* ── Full-height split layout ── */}
+        <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
 
-        {/* Sub-header */}
-        <header style={{ position: "sticky", top: 0, zIndex: 50, background: isDark ? "rgba(10,10,10,0.9)" : "rgba(244,246,249,0.9)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}` }}>
-          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 24px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <img src="https://www.guebly.com.br/guebly.png" alt="Guebly" style={{ height: 28, width: "auto", objectFit: "contain" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
-              <div style={{ width: 1, height: 18, background: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" }} />
-              <span style={{ fontSize: 13, fontWeight: 800, color: "var(--text)" }}>.pdf</span>
-              <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--muted)" }}>README to PDF</span>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-              <span style={badgeStyle}><Star size={9} /> Open-source</span>
-              <span style={badgeStyle}><Shield size={9} /> Zero dados</span>
-              <a href="https://github.com/guebly/guebly-readme-to-pdf" target="_blank" rel="noopener noreferrer" style={{ ...btnStyle(), textDecoration: "none" }}>
-                <Github size={13} /> GitHub
-              </a>
-            </div>
-          </div>
-        </header>
-
-        {/* Main */}
-        <main style={{ position: "relative", zIndex: 1, maxWidth: 1320, margin: "0 auto", padding: "28px 24px 56px", display: "flex", flexDirection: "column", gap: 20 }}>
-
-          {/* Drop Zone */}
+          {/* ── LEFT PANEL: Editor ── */}
           <div
             style={{
-              padding: "24px 28px",
-              border: `2px dashed ${dragging ? "#1A56DB" : isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-              borderRadius: 14,
-              cursor: "pointer",
-              background: dragging ? "rgba(26,86,219,0.08)" : isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
-              transition: "all 0.3s",
+              display: "flex",
+              flexDirection: "column",
+              width: "42%",
+              minWidth: 320,
+              borderRight: `1px solid ${bd}`,
+              overflow: "hidden",
             }}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            onClick={() => fileRef.current?.click()}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap", justifyContent: "center" }}>
-              <div style={{ width: 46, height: 46, borderRadius: 12, flexShrink: 0, background: "rgba(26,86,219,0.15)", border: "1px solid rgba(26,86,219,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#3b82f6" }}>
-                <Upload size={20} />
-              </div>
-              <div style={{ textAlign: "left" }}>
-                <div style={{ fontWeight: 700, fontSize: 14, color: "var(--text)" }}>
-                  {filename
-                    ? <span style={{ display: "flex", alignItems: "center", gap: 6 }}><FileText size={14} style={{ color: "#3b82f6" }} />{filename}</span>
-                    : "Arraste seu README.md aqui"
-                  }
-                </div>
-                <div style={{ fontSize: 12, color: "var(--text2)", marginTop: 2 }}>
-                  ou clique para selecionar · .md · .txt · .markdown
-                </div>
-              </div>
-              {md !== DEMO_MD && (
+            {/* Panel header */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "12px 16px",
+                borderBottom: `1px solid ${bd}`,
+                background: surfBg,
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 10,
+                  fontWeight: 800,
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "var(--muted)",
+                }}
+              >
+                EDITOR
+              </span>
+              <div style={{ display: "flex", gap: 6 }}>
                 <button
-                  style={{ ...btnStyle(false, true), marginLeft: "auto" }}
-                  onClick={e => { e.stopPropagation(); setMd(DEMO_MD); setFilename(""); toast("info", "Demo carregado"); }}
+                  className="btn btn-sm"
+                  onClick={() => copyText(md, "Markdown copiado!")}
                 >
-                  <X size={12} /> Limpar
+                  <Copy size={11} /> Copiar
                 </button>
-              )}
+                <button
+                  className="btn btn-sm"
+                  onClick={downloadMd}
+                >
+                  <Download size={11} /> .md
+                </button>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={() => { setMd(""); toast("info", "Editor limpo"); }}
+                >
+                  <Trash2 size={11} />
+                </button>
+              </div>
+            </div>
+
+            {/* File upload area */}
+            <div
+              style={{
+                margin: "12px 14px 0",
+                padding: "12px 16px",
+                border: `1.5px dashed ${dragging ? "var(--accent)" : bd}`,
+                borderRadius: 10,
+                background: dragging ? "var(--accent-soft)" : "transparent",
+                cursor: "pointer",
+                transition: "all 0.2s",
+                flexShrink: 0,
+              }}
+              onDragOver={onDragOver}
+              onDragLeave={onDragLeave}
+              onDrop={onDrop}
+              onClick={() => fileRef.current?.click()}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div
+                  style={{
+                    width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                    background: "rgba(75,139,255,0.12)",
+                    border: "1px solid rgba(75,139,255,0.2)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: "var(--accent)",
+                  }}
+                >
+                  <Upload size={14} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text)" }}>
+                    {filename
+                      ? <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                          <FileText size={11} style={{ color: "var(--accent)" }} />{filename}
+                        </span>
+                      : "Arraste seu README.md aqui"
+                    }
+                  </div>
+                  <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>
+                    .md · .txt · .markdown
+                  </div>
+                </div>
+                {md !== DEMO_MD && (
+                  <button
+                    style={{
+                      marginLeft: "auto", background: "none",
+                      border: `1px solid rgba(239,68,68,0.3)`,
+                      color: "#ef4444", borderRadius: 6,
+                      padding: "3px 8px", fontSize: 11, cursor: "pointer",
+                      fontFamily: "inherit", fontWeight: 600,
+                    }}
+                    onClick={e => { e.stopPropagation(); setMd(DEMO_MD); setFilename(""); toast("info", "Demo carregado"); }}
+                  >
+                    <X size={10} style={{ display: "inline", marginRight: 3 }} />Limpar
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Stats pills */}
+            <div
+              style={{
+                display: "flex",
+                gap: 6,
+                padding: "10px 14px",
+                flexShrink: 0,
+              }}
+            >
+              {[`${words.toLocaleString()} palavras`, `${chars.toLocaleString()} chars`, `${lines} linhas`].map(s => (
+                <span key={s} style={{
+                  fontSize: 10, fontWeight: 600,
+                  padding: "3px 8px", borderRadius: 6,
+                  border: `1px solid ${bd}`,
+                  background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
+                  color: "var(--muted)",
+                }}>
+                  {s}
+                </span>
+              ))}
+            </div>
+
+            {/* Textarea */}
+            <div style={{ flex: 1, overflow: "hidden", padding: "0 14px 8px" }}>
+              <textarea
+                value={md}
+                onChange={e => setMd(e.target.value)}
+                placeholder="Cole ou escreva seu Markdown aqui..."
+                style={{
+                  width: "100%", height: "100%",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 12.5, lineHeight: 1.7,
+                  background: inputBg,
+                  border: `1px solid ${bd}`,
+                  borderRadius: 10,
+                  padding: "12px 14px",
+                  color: "var(--text)",
+                  resize: "none",
+                  outline: "none",
+                }}
+              />
+            </div>
+
+            {/* Syntax tags */}
+            <div
+              style={{
+                display: "flex", flexWrap: "wrap", gap: 5,
+                padding: "8px 14px 12px",
+                flexShrink: 0,
+              }}
+            >
+              {["# H1", "**bold**", "*italic*", "`code`", "- lista", "> quote", "| table |"].map(tag => (
+                <span
+                  key={tag}
+                  className="syntax-tag"
+                  onClick={() => setMd(m => m + "\n" + tag)}
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
 
-          {/* Stats */}
-          <Stats md={md} isDark={isDark} />
-
-          {/* Editor Grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: 16, alignItems: "start" }}>
-
-            {/* Left: Editor */}
-            <div style={cardStyle}>
-              <div style={panelHeaderStyle}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 28, height: 28, borderRadius: 8, background: "rgba(26,86,219,0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "#3b82f6" }}>
-                    <Code2 size={13} />
-                  </div>
-                  <span style={{ fontWeight: 700, fontSize: 13, color: "var(--text)" }}>Editor</span>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "var(--muted)", marginLeft: 2 }}>
-                    {md.length.toLocaleString()} chars
-                  </span>
-                </div>
-                <div style={{ display: "flex", gap: 6 }}>
-                  <button style={btnStyle(false, true)} onClick={() => { setMd(""); toast("info", "Editor limpo"); }} title="Limpar">
-                    <Trash2 size={12} />
-                  </button>
-                  <button style={btnStyle()} onClick={() => copyText(md, "Markdown copiado!")}>
-                    <Copy size={12} /> Copiar
-                  </button>
-                  <button style={btnStyle()} onClick={downloadMd}>
-                    <Download size={12} /> .md
-                  </button>
-                </div>
-              </div>
-
-              <div style={{ padding: 6, background: isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.04)", margin: "0 8px 8px", borderRadius: 12, border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}` }}>
-                <textarea
-                  value={md}
-                  onChange={e => setMd(e.target.value)}
-                  placeholder="Cole ou escreva seu Markdown aqui..."
-                  style={{
-                    width: "100%", minHeight: 480, padding: "12px 14px",
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 12.5, lineHeight: 1.65,
-                    background: "transparent", border: "none", outline: "none",
-                    color: "var(--text)", resize: "vertical",
-                  }}
-                />
-              </div>
-
-              <div style={{ padding: "0 16px 14px", display: "flex", flexWrap: "wrap", gap: 5 }}>
-                {["# H1", "**bold**", "*italic*", "`code`", "- lista", "> quote", "---", "| table |"].map(tag => (
-                  <span
-                    key={tag}
-                    style={{
-                      fontSize: 11,
-                      fontFamily: "'JetBrains Mono', monospace",
-                      padding: "3px 8px",
-                      borderRadius: 6,
-                      border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
-                      background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
-                      color: isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => setMd(m => m + "\n" + tag)}
+          {/* ── RIGHT PANEL: Output ── */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              overflow: "hidden",
+            }}
+          >
+            {/* Tabs + actions header */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "12px 16px",
+                borderBottom: `1px solid ${bd}`,
+                background: surfBg,
+                flexShrink: 0,
+                gap: 10,
+                flexWrap: "wrap",
+              }}
+            >
+              {/* Tab pills */}
+              <div className="tab-group">
+                {([
+                  { key: "preview" as RightTab, icon: <Eye size={12} />,      label: "Preview" },
+                  { key: "social"  as RightTab, icon: <Globe size={12} />,    label: "Social"  },
+                  { key: "raw"     as RightTab, icon: <Terminal size={12} />, label: "HTML"    },
+                ]).map(t => (
+                  <button
+                    key={t.key}
+                    className={`tab ${rightTab === t.key ? "tab-active" : ""}`}
+                    onClick={() => setRightTab(t.key)}
                   >
-                    {tag}
-                  </span>
+                    {t.icon} {t.label}
+                  </button>
                 ))}
+              </div>
+
+              {/* Right-side actions */}
+              <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
+                {rightTab === "preview" && (
+                  <>
+                    {/* Theme pill buttons */}
+                    <div style={{ display: "flex", gap: 4 }}>
+                      {(Object.entries(DOC_THEMES) as [DocTheme, typeof DOC_THEMES[DocTheme]][]).map(([k, v]) => (
+                        <button
+                          key={k}
+                          onClick={() => setDocTheme(k)}
+                          className="btn btn-sm"
+                          style={{
+                            background: docTheme === k ? "var(--accent)" : undefined,
+                            borderColor: docTheme === k ? "var(--accent)" : undefined,
+                            color: docTheme === k ? "#fff" : undefined,
+                          }}
+                        >
+                          {v.icon} {v.label}
+                        </button>
+                      ))}
+                    </div>
+                    <button className="btn btn-sm btn-primary" onClick={printPdf}>
+                      <Download size={11} /> Exportar PDF
+                    </button>
+                  </>
+                )}
+                {rightTab === "social" && (
+                  <button className="btn btn-sm" onClick={() => copyText(chunks[0] ?? "", "Copiado!")}>
+                    {copied ? <CheckCircle size={12} /> : <Copy size={12} />} Copiar
+                  </button>
+                )}
+                {rightTab === "raw" && (
+                  <button className="btn btn-sm" onClick={() => copyText(htmlPreview, "HTML copiado!")}>
+                    <Copy size={12} /> HTML
+                  </button>
+                )}
               </div>
             </div>
 
-            {/* Right: Output */}
-            <div style={cardStyle}>
-              <div style={panelHeaderStyle}>
-                {/* Tabs */}
-                <div style={tabGroupStyle}>
-                  {([
-                    { key: "preview", icon: <Eye size={12} />,      label: "Preview" },
-                    { key: "social",  icon: <Globe size={12} />,    label: "Social"  },
-                    { key: "raw",     icon: <Terminal size={12} />, label: "HTML"    },
-                  ] as const).map(t => (
-                    <button
-                      key={t.key}
-                      style={tabStyle(rightTab === t.key)}
-                      onClick={() => setRightTab(t.key)}
-                    >
-                      {t.icon} {t.label}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Actions */}
-                <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
-                  {rightTab === "preview" && (
-                    <>
-                      <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-                        <select
-                          value={docTheme}
-                          onChange={e => setDocTheme(e.target.value as DocTheme)}
-                          style={{
-                            padding: "6px 28px 6px 10px", borderRadius: 8,
-                            border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`, background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
-                            fontSize: 12, fontWeight: 600, color: "var(--text)",
-                          }}
-                        >
-                          {Object.entries(DOC_THEMES).map(([k, v]) => (
-                            <option key={k} value={k}>{v.label}</option>
-                          ))}
-                        </select>
-                        <ChevronDown size={11} style={{ position: "absolute", right: 8, pointerEvents: "none", color: "var(--muted)" }} />
-                      </div>
-                      <button style={btnStyle(true)} onClick={printPdf}>
-                        <Download size={12} /> Exportar PDF
-                      </button>
-                    </>
-                  )}
-                  {rightTab === "social" && (
-                    <button style={btnStyle()} onClick={() => copyText(chunks[0] ?? "", "Copiado!")}>
-                      {copied ? <CheckCircle size={12} /> : <Copy size={12} />} Copiar
-                    </button>
-                  )}
-                  {rightTab === "raw" && (
-                    <button style={btnStyle()} onClick={() => copyText(htmlPreview, "HTML copiado!")}>
-                      <Copy size={12} /> HTML
-                    </button>
-                  )}
-                </div>
-              </div>
+            {/* Content area */}
+            <div style={{ flex: 1, overflow: "auto" }}>
 
               {/* Preview Tab */}
               {rightTab === "preview" && (
-                <div style={{ padding: "4px 8px 8px" }}>
+                <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
                   {docTheme === "terminal" && (
-                    <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 14px", background: "#252535", borderRadius: "10px 10px 0 0" }}>
+                    <div style={{
+                      display: "flex", alignItems: "center", gap: 6,
+                      padding: "8px 14px",
+                      background: "#252535",
+                      flexShrink: 0,
+                    }}>
                       <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#FF5F56", display: "inline-block" }} />
                       <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#FFBD2E", display: "inline-block" }} />
                       <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#27C93F", display: "inline-block" }} />
@@ -577,18 +552,14 @@ export default function ReadmePdf() {
                   <div
                     className="preview-body"
                     style={{
-                      padding: "20px 22px",
-                      overflowY: "auto",
-                      maxHeight: 560,
+                      flex: 1,
+                      padding: "24px 28px",
                       ...(docTheme === "terminal" ? {
                         background: "#1C1C27", color: "#E2E8F0",
-                        borderRadius: "0 0 10px 10px",
                         fontFamily: "'JetBrains Mono', monospace",
                         fontSize: 13,
                       } : {
-                        borderRadius: 10,
-                        background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
-                        border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
+                        background: isDark ? "rgba(255,255,255,0.02)" : "#ffffff",
                         color: "var(--text)",
                       }),
                     }}
@@ -599,11 +570,16 @@ export default function ReadmePdf() {
 
               {/* Social Tab */}
               {rightTab === "social" && (
-                <div style={{ padding: "12px 16px 16px", display: "flex", flexDirection: "column", gap: 12 }}>
-                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-                    <div style={tabGroupStyle}>
+                <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: 12, height: "100%" }}>
+                  {/* Platform tabs + split */}
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", flexShrink: 0 }}>
+                    <div className="tab-group">
                       {(Object.entries(PLATFORMS) as [Platform, typeof PLATFORMS[Platform]][]).map(([k, v]) => (
-                        <button key={k} style={tabStyle(platform === k)} onClick={() => setPlatform(k)}>
+                        <button
+                          key={k}
+                          className={`tab ${platform === k ? "tab-active" : ""}`}
+                          onClick={() => setPlatform(k)}
+                        >
                           {v.icon} {v.label}
                         </button>
                       ))}
@@ -611,7 +587,7 @@ export default function ReadmePdf() {
 
                     <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
                       <label style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 600, color: "var(--muted)", cursor: "pointer" }}>
-                        <input type="checkbox" checked={splitEnabled} onChange={e => setSplit(e.target.checked)} style={{ accentColor: "#1A56DB" }} />
+                        <input type="checkbox" checked={splitEnabled} onChange={e => setSplit(e.target.checked)} style={{ accentColor: "var(--accent)" }} />
                         <Scissors size={11} /> Split
                       </label>
                       {splitEnabled && (
@@ -620,8 +596,9 @@ export default function ReadmePdf() {
                           onChange={e => setMaxLen(Number(e.target.value))}
                           min={200} max={10000}
                           style={{
-                            width: 76, padding: "5px 9px", borderRadius: 8,
-                            border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`, background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+                            width: 80, padding: "5px 9px", borderRadius: 8,
+                            border: `1px solid ${bd}`,
+                            background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
                             fontSize: 12, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace",
                             color: "var(--text)",
                           }}
@@ -631,9 +608,9 @@ export default function ReadmePdf() {
                   </div>
 
                   {chunks.length > 1 && (
-                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", flexShrink: 0 }}>
                       {chunks.map((c, i) => (
-                        <button key={i} style={btnStyle()} onClick={() => copyText(c, `Bloco ${i + 1} copiado!`)}>
+                        <button key={i} className="btn btn-sm" onClick={() => copyText(c, `Bloco ${i + 1} copiado!`)}>
                           <Copy size={10} /> Bloco {i + 1}
                           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "var(--muted)" }}>({c.length})</span>
                         </button>
@@ -646,15 +623,17 @@ export default function ReadmePdf() {
                     value={chunks.join("\n\n────── PRÓXIMO BLOCO ──────\n\n")}
                     placeholder="Selecione a plataforma..."
                     style={{
-                      width: "100%", minHeight: 420, padding: "14px 16px",
-                      borderRadius: 10, border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
-                      background: isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.03)", fontSize: 13, lineHeight: 1.65,
+                      flex: 1, width: "100%", minHeight: 200,
+                      padding: "14px 16px", borderRadius: 10,
+                      border: `1px solid ${bd}`,
+                      background: inputBg,
+                      fontSize: 13, lineHeight: 1.65,
                       fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      color: "var(--text)", resize: "vertical",
+                      color: "var(--text)", resize: "none",
                     }}
                   />
 
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "var(--muted)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "var(--muted)", flexShrink: 0 }}>
                     <Info size={11} />
                     {chunks.length} bloco(s) · {socialText.length.toLocaleString()} chars · limite {PLATFORMS[platform].maxLen.toLocaleString()}
                   </div>
@@ -663,35 +642,55 @@ export default function ReadmePdf() {
 
               {/* Raw HTML Tab */}
               {rightTab === "raw" && (
-                <div style={{ padding: "8px 8px 8px" }}>
-                  <pre style={{
-                    background: isDark ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.04)", color: isDark ? "#a5f3fc" : "#1e293b",
-                    padding: "16px 18px", borderRadius: 10,
-                    fontSize: 11.5, lineHeight: 1.6,
-                    overflowX: "auto", overflowY: "auto", maxHeight: 560,
-                    whiteSpace: "pre-wrap", wordBreak: "break-all",
-                    fontFamily: "'JetBrains Mono', monospace",
-                    margin: 0,
-                    border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
-                  }}>
-                    {htmlPreview || "Nada ainda..."}
-                  </pre>
-                </div>
+                <pre style={{
+                  margin: 0, height: "100%",
+                  background: isDark ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.04)",
+                  color: isDark ? "#a5f3fc" : "#1e293b",
+                  padding: "20px 22px",
+                  fontSize: 11.5, lineHeight: 1.65,
+                  overflowX: "auto",
+                  whiteSpace: "pre-wrap", wordBreak: "break-all",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  borderTop: `1px solid ${bd}`,
+                }}>
+                  {htmlPreview || "Nada ainda..."}
+                </pre>
               )}
             </div>
-          </div>
 
-          {/* Footer */}
-          <footer style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap", padding: "8px 0", borderTop: "1px solid rgba(255,255,255,0.06)", marginTop: 8 }}>
-            <img src="https://www.guebly.com.br/guebly.png" alt="Guebly" style={{ height: 18, width: "auto", opacity: 0.5 }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
-            <span style={{ fontSize: 11, color: "var(--muted)" }}>© {new Date().getFullYear()} Guebly</span>
-            <span style={badgeStyle}><Star size={9} /> Open-source</span>
-            <span style={badgeStyle}><Shield size={9} /> Sem coleta</span>
-            <a href="https://github.com/guebly/guebly-readme-to-pdf" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "#3b82f6", textDecoration: "none", fontWeight: 600 }}>
-              <Github size={12} /> guebly/guebly-readme-to-pdf
-            </a>
-          </footer>
-        </main>
+            {/* Export button pinned to bottom — only in preview */}
+            {rightTab === "preview" && (
+              <div
+                style={{
+                  padding: "12px 16px",
+                  borderTop: `1px solid ${bd}`,
+                  background: surfBg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexShrink: 0,
+                }}
+              >
+                <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                  <span style={{ fontSize: 10, color: "var(--muted)" }}>
+                    <Star size={10} style={{ display: "inline", marginRight: 4 }} />
+                    Open-source
+                  </span>
+                  <span style={{ fontSize: 10, color: "var(--muted)" }}>
+                    <Shield size={10} style={{ display: "inline", marginRight: 4 }} />
+                    Zero dados
+                  </span>
+                  <a href="https://github.com/guebly/guebly-readme-to-pdf" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", fontSize: 10, textDecoration: "none", display: "flex", alignItems: "center", gap: 4, fontWeight: 600 }}>
+                    <Github size={10} /> GitHub
+                  </a>
+                </div>
+                <button className="btn btn-primary" onClick={printPdf}>
+                  <Download size={13} /> Exportar PDF
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </Layout>
   );
