@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
+import { useTheme } from "../contexts/ThemeContext";
 import {
   Copy,
   Eraser,
@@ -100,9 +101,9 @@ function Badge({ children }: { children: React.ReactNode }) {
     <span
       className="text-[10px] font-black px-3 py-1.5 rounded-full border tracking-widest transition whitespace-nowrap"
       style={{
-        background: "rgba(255,255,255,0.05)",
-        borderColor: "rgba(255,255,255,0.1)",
-        color: "rgba(255,255,255,0.6)",
+        background: "var(--surface)",
+        borderColor: "var(--border)",
+        color: "var(--text2)",
       }}
     >
       {children}
@@ -115,9 +116,9 @@ function Tag({ children }: { children: React.ReactNode }) {
     <span
       className="px-3 py-1.5 rounded-full text-[10px] font-bold border whitespace-nowrap"
       style={{
-        background: "rgba(255,255,255,0.04)",
-        borderColor: "rgba(255,255,255,0.08)",
-        color: "rgba(255,255,255,0.4)",
+        background: "var(--surface2)",
+        borderColor: "var(--border2)",
+        color: "var(--muted)",
       }}
     >
       {children}
@@ -127,6 +128,8 @@ function Tag({ children }: { children: React.ReactNode }) {
 
 export default function TextFormatter() {
   const { toasts, addToast } = useToast();
+  const { theme: appTheme } = useTheme();
+  const isDark = appTheme === 'dark';
 
   const [platform, setPlatform] = useState<PlatformKey>("linkedin");
   const [input, setInput] = useState("");
@@ -180,7 +183,7 @@ export default function TextFormatter() {
     <Layout toolName="Text Formatter">
       <div
         className="min-h-screen overflow-x-hidden"
-        style={{ background: "#0a0a0a", color: "#ffffff" }}
+        style={{ background: "var(--bg)", color: "var(--text)" }}
       >
         <ToastContainer toasts={toasts} />
 
@@ -201,8 +204,8 @@ export default function TextFormatter() {
           <header
             className="sticky top-0 z-40 border-b shadow-2xl backdrop-blur-xl"
             style={{
-              background: "rgba(10,10,10,0.9)",
-              borderColor: "rgba(255,255,255,0.08)",
+              background: isDark ? "rgba(10,10,10,0.9)" : "rgba(244,246,249,0.9)",
+              borderColor: "var(--border)",
             }}
           >
             <div className="px-4 sm:px-6 md:px-10 py-4 max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
@@ -226,13 +229,13 @@ export default function TextFormatter() {
                 <div
                   className="flex items-center justify-between sm:justify-start gap-2 px-4 py-3 rounded-2xl border w-full sm:w-auto"
                   style={{
-                    background: "rgba(255,255,255,0.03)",
-                    borderColor: "rgba(255,255,255,0.08)",
+                    background: "var(--surface)",
+                    borderColor: "var(--border)",
                   }}
                 >
                   <span
                     className="text-[10px] font-bold uppercase tracking-widest whitespace-nowrap"
-                    style={{ color: "rgba(255,255,255,0.4)" }}
+                    style={{ color: "var(--muted)" }}
                   >
                     PLATAFORMA
                   </span>
@@ -243,9 +246,9 @@ export default function TextFormatter() {
                       onChange={(e) => setPlatform(e.target.value as PlatformKey)}
                       className="w-full sm:w-auto appearance-none bg-transparent border rounded-xl px-4 py-2 pr-9 text-sm font-black outline-none transition"
                       style={{
-                        borderColor: "rgba(255,255,255,0.1)",
-                        color: "#ffffff",
-                        background: "rgba(255,255,255,0.04)",
+                        borderColor: "var(--border)",
+                        color: "var(--text)",
+                        background: "var(--surface)",
                       }}
                     >
                       <option value="linkedin">LinkedIn</option>
@@ -255,7 +258,7 @@ export default function TextFormatter() {
 
                     <div
                       className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
-                      style={{ color: "rgba(255,255,255,0.4)" }}
+                      style={{ color: "var(--muted)" }}
                     >
                       {PLATFORM[platform].icon}
                     </div>
@@ -268,9 +271,9 @@ export default function TextFormatter() {
                     onClick={onClear}
                     className="w-full px-4 sm:px-5 py-3 rounded-2xl font-black text-[11px] sm:text-xs tracking-widest transition active:scale-95 flex items-center justify-center gap-2 border"
                     style={{
-                      background: "rgba(255,255,255,0.04)",
-                      borderColor: "rgba(255,255,255,0.08)",
-                      color: "rgba(255,255,255,0.5)",
+                      background: "var(--surface)",
+                      borderColor: "var(--border)",
+                      color: "var(--text2)",
                     }}
                   >
                     <Eraser size={16} /> <span className="truncate">LIMPAR</span>
@@ -280,10 +283,10 @@ export default function TextFormatter() {
                     onClick={onExecute}
                     className="w-full relative px-4 sm:px-5 py-3 rounded-2xl font-black text-[11px] sm:text-xs tracking-widest flex items-center justify-center gap-2 border transition active:scale-95 hover:-translate-y-[1px] select-none overflow-hidden"
                     style={{
-                      background: "linear-gradient(180deg, rgba(15,23,42,0.85), rgba(2,6,23,0.95))",
-                      borderColor: "rgba(255,255,255,0.14)",
+                      background: "var(--accent)",
+                      borderColor: "var(--accent)",
                       color: "#fff",
-                      boxShadow: "0 12px 28px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(255,255,255,0.04)",
+                      boxShadow: "0 4px 18px var(--accent-glow)",
                     }}
                   >
                     <span className="relative flex items-center gap-2">
@@ -300,8 +303,8 @@ export default function TextFormatter() {
             <section
               className="border rounded-[26px] md:rounded-[30px] p-4 sm:p-6 md:p-8 shadow-2xl relative overflow-hidden"
               style={{
-                background: "rgba(255,255,255,0.02)",
-                borderColor: "rgba(255,255,255,0.08)",
+                background: "var(--surface)",
+                borderColor: "var(--border)",
               }}
             >
               <div
@@ -318,7 +321,7 @@ export default function TextFormatter() {
                   </h2>
                   <p
                     className="text-xs md:text-sm mt-1"
-                    style={{ color: "rgba(255,255,255,0.4)" }}
+                    style={{ color: "var(--text2)" }}
                   >
                     Cole o texto (Markdown/IA) e transforme para o que o app
                     realmente aceita. {PLATFORM[platform].helper}
@@ -328,14 +331,14 @@ export default function TextFormatter() {
                 <div
                   className="w-full md:w-auto flex items-center justify-between md:justify-start gap-3 px-4 py-3 rounded-2xl border"
                   style={{
-                    background: "rgba(255,255,255,0.02)",
-                    borderColor: "rgba(255,255,255,0.08)",
+                    background: "var(--surface2)",
+                    borderColor: "var(--border)",
                   }}
                   title="DIVIDIR: quebra a saída em blocos com no máximo X caracteres."
                 >
                   <label
                     className="flex items-center gap-2 text-xs font-black whitespace-nowrap"
-                    style={{ color: "rgba(255,255,255,0.4)" }}
+                    style={{ color: "var(--muted)" }}
                   >
                     <input
                       type="checkbox"
@@ -354,16 +357,16 @@ export default function TextFormatter() {
                     max={10000}
                     className="w-24 sm:w-28 rounded-xl px-3 py-2 text-sm font-black outline-none transition border"
                     style={{
-                      background: "rgba(255,255,255,0.04)",
-                      borderColor: "rgba(255,255,255,0.08)",
-                      color: "#ffffff",
+                      background: "var(--surface)",
+                      borderColor: "var(--border)",
+                      color: "var(--text)",
                     }}
                     disabled={!splitEnabled}
                   />
 
                   <span
                     className="hidden sm:inline text-[10px] font-bold whitespace-nowrap"
-                    style={{ color: "rgba(255,255,255,0.3)" }}
+                    style={{ color: "var(--muted)" }}
                   >
                     quebra em partes
                   </span>
@@ -375,15 +378,15 @@ export default function TextFormatter() {
                 <div
                   className="border p-4 sm:p-6 rounded-2xl shadow-lg"
                   style={{
-                    background: "rgba(255,255,255,0.02)",
-                    borderColor: "rgba(255,255,255,0.06)",
+                    background: "var(--surface2)",
+                    borderColor: "var(--border2)",
                   }}
                 >
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-sm tracking-wide uppercase">Entrada</h3>
                     <span
                       className="text-[10px] font-mono"
-                      style={{ color: "rgba(255,255,255,0.3)" }}
+                      style={{ color: "var(--muted)" }}
                     >
                       {input.length.toLocaleString()} chars
                     </span>
@@ -392,9 +395,9 @@ export default function TextFormatter() {
                   <textarea
                     className="w-full min-h-[360px] sm:min-h-[420px] rounded-xl px-4 py-4 text-xs font-mono outline-none transition resize-y border"
                     style={{
-                      background: "rgba(0,0,0,0.3)",
-                      borderColor: "rgba(255,255,255,0.06)",
-                      color: "#ffffff",
+                      background: "var(--bg2)",
+                      borderColor: "var(--border2)",
+                      color: "var(--text)",
                     }}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
@@ -414,8 +417,8 @@ export default function TextFormatter() {
                 <div
                   className="border p-4 sm:p-6 rounded-2xl shadow-lg"
                   style={{
-                    background: "rgba(255,255,255,0.02)",
-                    borderColor: "rgba(255,255,255,0.06)",
+                    background: "var(--surface2)",
+                    borderColor: "var(--border2)",
                   }}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
@@ -427,12 +430,12 @@ export default function TextFormatter() {
                         className="text-[10px] font-black px-2 py-1 rounded border shrink-0"
                         style={{
                           borderColor: isStale
-                            ? "rgba(148,163,184,0.30)"
+                            ? "var(--border)"
                             : "rgba(34,197,94,0.30)",
                           background: isStale
-                            ? "rgba(255,255,255,0.04)"
+                            ? "var(--surface)"
                             : "rgba(34,197,94,0.10)",
-                          color: isStale ? "rgba(255,255,255,0.3)" : "rgb(34,197,94)",
+                          color: isStale ? "var(--muted)" : "rgb(34,197,94)",
                         }}
                       >
                         {isStale ? "PRECISA EXECUTAR" : "ATUALIZADA"}
@@ -444,9 +447,9 @@ export default function TextFormatter() {
                         onClick={() => copyText(chunks[0] || "", "Copiado (1º bloco).")}
                         className="w-full sm:w-auto px-3 py-2 rounded-xl text-[11px] font-black transition flex items-center justify-center gap-2 border"
                         style={{
-                          background: "rgba(255,255,255,0.04)",
-                          borderColor: "rgba(255,255,255,0.08)",
-                          color: "#ffffff",
+                          background: "var(--surface)",
+                          borderColor: "var(--border)",
+                          color: "var(--text)",
                         }}
                         disabled={!executed}
                       >
@@ -457,9 +460,9 @@ export default function TextFormatter() {
                         onClick={() => copyText(executed, "Copiado (inteiro).")}
                         className="w-full sm:w-auto px-3 py-2 rounded-xl text-[11px] font-black transition flex items-center justify-center gap-2 border"
                         style={{
-                          background: "rgba(255,255,255,0.04)",
-                          borderColor: "rgba(255,255,255,0.08)",
-                          color: "#ffffff",
+                          background: "var(--surface)",
+                          borderColor: "var(--border)",
+                          color: "var(--text)",
                         }}
                         disabled={!executed}
                       >
@@ -471,9 +474,9 @@ export default function TextFormatter() {
                   <textarea
                     className="w-full min-h-[360px] sm:min-h-[420px] rounded-xl px-4 py-4 text-sm outline-none transition resize-y border font-unicode-safe"
                     style={{
-                      background: "rgba(0,0,0,0.3)",
-                      borderColor: "rgba(255,255,255,0.06)",
-                      color: "#ffffff",
+                      background: "var(--bg2)",
+                      borderColor: "var(--border2)",
+                      color: "var(--text)",
                     }}
                     value={outText}
                     readOnly
@@ -482,7 +485,7 @@ export default function TextFormatter() {
 
                   <div
                     className="mt-4 flex items-start gap-3 text-[11px]"
-                    style={{ color: "rgba(255,255,255,0.3)" }}
+                    style={{ color: "var(--muted)" }}
                   >
                     <div className="mt-0.5">
                       <Info size={14} />
@@ -498,7 +501,7 @@ export default function TextFormatter() {
 
             <footer
               className="text-center text-[10px] font-mono py-8"
-              style={{ color: "rgba(255,255,255,0.2)" }}
+              style={{ color: "var(--muted)" }}
             >
               © {new Date().getFullYear()} Guebly • Open-source tool • Sem coleta de dados
             </footer>

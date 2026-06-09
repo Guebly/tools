@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef, useMemo } from "react";
+import { useTheme } from "../contexts/ThemeContext";
 import {
   Upload, Download, Copy, Trash2, Eye, Code2, CheckCircle,
   AlertCircle, Info, Github, X, Terminal, Globe, Shield,
@@ -102,14 +103,14 @@ function ToastStack({ toasts }: { toasts: Toast[] }) {
           }}
         >
           {icons[t.type]}
-          <span style={{ color: "#ffffff", fontSize: 13, fontWeight: 600 }}>{t.msg}</span>
+          <span style={{ color: c[t.type], fontSize: 13, fontWeight: 600 }}>{t.msg}</span>
         </div>
       ))}
     </div>
   );
 }
 
-function Stats({ md }: { md: string }) {
+function Stats({ md, isDark }: { md: string; isDark: boolean }) {
   const words      = useMemo(() => md.trim().split(/\s+/).filter(Boolean).length, [md]);
   const chars      = md.length;
   const lines      = md.split("\n").length;
@@ -130,15 +131,15 @@ function Stats({ md }: { md: string }) {
         <div
           key={s.label}
           style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.08)",
+            background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
+            border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
             borderRadius: 10,
             padding: "10px 12px",
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: 18, fontWeight: 800, color: "#ffffff" }}>{s.num}</div>
-          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>{s.label}</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: isDark ? "#ffffff" : "#0f172a" }}>{s.num}</div>
+          <div style={{ fontSize: 11, color: isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)", marginTop: 2 }}>{s.label}</div>
         </div>
       ))}
     </div>
@@ -208,32 +209,33 @@ function getPdfStyles(docTheme: DocTheme): string {
   ` + footer;
 }
 
-const cardStyle: React.CSSProperties = {
-  background: "rgba(255,255,255,0.03)",
-  border: "1px solid rgba(255,255,255,0.08)",
+// Style factories — accept isDark to support theming
+const makeCardStyle = (isDark: boolean): React.CSSProperties => ({
+  background: isDark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.85)",
+  border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
   borderRadius: 16,
   overflow: "hidden",
-};
+});
 
-const panelHeaderStyle: React.CSSProperties = {
+const makePanelHeaderStyle = (isDark: boolean): React.CSSProperties => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
   padding: "12px 16px",
-  borderBottom: "1px solid rgba(255,255,255,0.06)",
+  borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
   gap: 8,
   flexWrap: "wrap",
-};
+});
 
-const btnStyle = (primary?: boolean, danger?: boolean): React.CSSProperties => ({
+const makeBtnStyle = (isDark: boolean, primary?: boolean, danger?: boolean): React.CSSProperties => ({
   display: "flex",
   alignItems: "center",
   gap: 5,
   padding: "6px 12px",
   borderRadius: 8,
-  border: `1px solid ${danger ? "rgba(239,68,68,0.4)" : "rgba(255,255,255,0.1)"}`,
-  background: primary ? "#1A56DB" : danger ? "rgba(239,68,68,0.1)" : "rgba(255,255,255,0.05)",
-  color: primary ? "#fff" : danger ? "#ef4444" : "rgba(255,255,255,0.7)",
+  border: `1px solid ${danger ? "rgba(239,68,68,0.4)" : isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+  background: primary ? "#1A56DB" : danger ? "rgba(239,68,68,0.1)" : isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+  color: primary ? "#fff" : danger ? "#ef4444" : isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)",
   fontSize: 12,
   fontWeight: 600,
   cursor: "pointer",
@@ -242,14 +244,14 @@ const btnStyle = (primary?: boolean, danger?: boolean): React.CSSProperties => (
   whiteSpace: "nowrap" as const,
 });
 
-const tabGroupStyle: React.CSSProperties = {
+const makeTabGroupStyle = (isDark: boolean): React.CSSProperties => ({
   display: "flex",
-  border: "1px solid rgba(255,255,255,0.08)",
+  border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
   borderRadius: 8,
   overflow: "hidden",
-};
+});
 
-const tabStyle = (active: boolean): React.CSSProperties => ({
+const makeTabStyle = (isDark: boolean, active: boolean): React.CSSProperties => ({
   display: "flex",
   alignItems: "center",
   gap: 4,
@@ -259,25 +261,34 @@ const tabStyle = (active: boolean): React.CSSProperties => ({
   cursor: "pointer",
   border: "none",
   background: active ? "#1A56DB" : "transparent",
-  color: active ? "#fff" : "rgba(255,255,255,0.5)",
+  color: active ? "#fff" : isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)",
   fontFamily: "inherit",
   transition: "all 0.2s",
 });
 
-const badgeStyle: React.CSSProperties = {
+const makeBadgeStyle = (isDark: boolean): React.CSSProperties => ({
   display: "inline-flex",
   alignItems: "center",
   gap: 4,
   padding: "3px 8px",
   borderRadius: 6,
-  border: "1px solid rgba(255,255,255,0.08)",
-  background: "rgba(255,255,255,0.04)",
-  color: "rgba(255,255,255,0.4)",
+  border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
+  background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
+  color: isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)",
   fontSize: 10,
   fontWeight: 600,
-};
+});
 
 export default function ReadmePdf() {
+  const { theme: appTheme } = useTheme()
+  const isDark = appTheme === 'dark'
+  const cardStyle = makeCardStyle(isDark)
+  const panelHeaderStyle = makePanelHeaderStyle(isDark)
+  const btnStyle = (primary?: boolean, danger?: boolean) => makeBtnStyle(isDark, primary, danger)
+  const tabGroupStyle = makeTabGroupStyle(isDark)
+  const tabStyle = (active: boolean) => makeTabStyle(isDark, active)
+  const badgeStyle = makeBadgeStyle(isDark)
+
   const [md, setMd]               = useState(DEMO_MD);
   const [rightTab, setRightTab]   = useState<RightTab>("preview");
   const [platform, setPlatform]   = useState<Platform>("linkedin");
@@ -350,7 +361,7 @@ export default function ReadmePdf() {
 
   return (
     <Layout toolName="README to PDF">
-      <div style={{ minHeight: "100vh", background: "#0a0a0a", color: "#ffffff", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         <ToastStack toasts={toasts} />
         <input ref={fileRef} type="file" accept=".md,.txt,.markdown" style={{ display: "none" }} onChange={loadFile} />
 
@@ -361,13 +372,13 @@ export default function ReadmePdf() {
         </div>
 
         {/* Sub-header */}
-        <header style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(10,10,10,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        <header style={{ position: "sticky", top: 0, zIndex: 50, background: isDark ? "rgba(10,10,10,0.9)" : "rgba(244,246,249,0.9)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}` }}>
           <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 24px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <img src="https://www.guebly.com.br/guebly.png" alt="Guebly" style={{ height: 28, width: "auto", objectFit: "contain" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
-              <div style={{ width: 1, height: 18, background: "rgba(255,255,255,0.1)" }} />
-              <span style={{ fontSize: 13, fontWeight: 800, color: "#ffffff" }}>.pdf</span>
-              <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: ".08em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>README to PDF</span>
+              <div style={{ width: 1, height: 18, background: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" }} />
+              <span style={{ fontSize: 13, fontWeight: 800, color: "var(--text)" }}>.pdf</span>
+              <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--muted)" }}>README to PDF</span>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
@@ -387,10 +398,10 @@ export default function ReadmePdf() {
           <div
             style={{
               padding: "24px 28px",
-              border: `2px dashed ${dragging ? "#1A56DB" : "rgba(255,255,255,0.1)"}`,
+              border: `2px dashed ${dragging ? "#1A56DB" : isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
               borderRadius: 14,
               cursor: "pointer",
-              background: dragging ? "rgba(26,86,219,0.08)" : "rgba(255,255,255,0.02)",
+              background: dragging ? "rgba(26,86,219,0.08)" : isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
               transition: "all 0.3s",
             }}
             onDragOver={onDragOver}
@@ -403,13 +414,13 @@ export default function ReadmePdf() {
                 <Upload size={20} />
               </div>
               <div style={{ textAlign: "left" }}>
-                <div style={{ fontWeight: 700, fontSize: 14, color: "#ffffff" }}>
+                <div style={{ fontWeight: 700, fontSize: 14, color: "var(--text)" }}>
                   {filename
                     ? <span style={{ display: "flex", alignItems: "center", gap: 6 }}><FileText size={14} style={{ color: "#3b82f6" }} />{filename}</span>
                     : "Arraste seu README.md aqui"
                   }
                 </div>
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>
+                <div style={{ fontSize: 12, color: "var(--text2)", marginTop: 2 }}>
                   ou clique para selecionar · .md · .txt · .markdown
                 </div>
               </div>
@@ -425,7 +436,7 @@ export default function ReadmePdf() {
           </div>
 
           {/* Stats */}
-          <Stats md={md} />
+          <Stats md={md} isDark={isDark} />
 
           {/* Editor Grid */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: 16, alignItems: "start" }}>
@@ -437,8 +448,8 @@ export default function ReadmePdf() {
                   <div style={{ width: 28, height: 28, borderRadius: 8, background: "rgba(26,86,219,0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "#3b82f6" }}>
                     <Code2 size={13} />
                   </div>
-                  <span style={{ fontWeight: 700, fontSize: 13, color: "#ffffff" }}>Editor</span>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.3)", marginLeft: 2 }}>
+                  <span style={{ fontWeight: 700, fontSize: 13, color: "var(--text)" }}>Editor</span>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "var(--muted)", marginLeft: 2 }}>
                     {md.length.toLocaleString()} chars
                   </span>
                 </div>
@@ -455,7 +466,7 @@ export default function ReadmePdf() {
                 </div>
               </div>
 
-              <div style={{ padding: 6, background: "rgba(0,0,0,0.3)", margin: "0 8px 8px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)" }}>
+              <div style={{ padding: 6, background: isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.04)", margin: "0 8px 8px", borderRadius: 12, border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}` }}>
                 <textarea
                   value={md}
                   onChange={e => setMd(e.target.value)}
@@ -465,7 +476,7 @@ export default function ReadmePdf() {
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: 12.5, lineHeight: 1.65,
                     background: "transparent", border: "none", outline: "none",
-                    color: "#e2e8f0", resize: "vertical",
+                    color: "var(--text)", resize: "vertical",
                   }}
                 />
               </div>
@@ -479,9 +490,9 @@ export default function ReadmePdf() {
                       fontFamily: "'JetBrains Mono', monospace",
                       padding: "3px 8px",
                       borderRadius: 6,
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      background: "rgba(255,255,255,0.04)",
-                      color: "rgba(255,255,255,0.4)",
+                      border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
+                      background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
+                      color: isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)",
                       cursor: "pointer",
                     }}
                     onClick={() => setMd(m => m + "\n" + tag)}
@@ -522,15 +533,15 @@ export default function ReadmePdf() {
                           onChange={e => setDocTheme(e.target.value as DocTheme)}
                           style={{
                             padding: "6px 28px 6px 10px", borderRadius: 8,
-                            border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)",
-                            fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.7)",
+                            border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`, background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+                            fontSize: 12, fontWeight: 600, color: "var(--text)",
                           }}
                         >
                           {Object.entries(DOC_THEMES).map(([k, v]) => (
                             <option key={k} value={k}>{v.label}</option>
                           ))}
                         </select>
-                        <ChevronDown size={11} style={{ position: "absolute", right: 8, pointerEvents: "none", color: "rgba(255,255,255,0.4)" }} />
+                        <ChevronDown size={11} style={{ position: "absolute", right: 8, pointerEvents: "none", color: "var(--muted)" }} />
                       </div>
                       <button style={btnStyle(true)} onClick={printPdf}>
                         <Download size={12} /> Exportar PDF
@@ -576,12 +587,12 @@ export default function ReadmePdf() {
                         fontSize: 13,
                       } : {
                         borderRadius: 10,
-                        background: "rgba(255,255,255,0.03)",
-                        border: "1px solid rgba(255,255,255,0.06)",
-                        color: "#e2e8f0",
+                        background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
+                        border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
+                        color: "var(--text)",
                       }),
                     }}
-                    dangerouslySetInnerHTML={{ __html: htmlPreview || `<p style="color:rgba(255,255,255,0.3)">Nada para mostrar ainda...</p>` }}
+                    dangerouslySetInnerHTML={{ __html: htmlPreview || `<p style="color:var(--muted)">Nada para mostrar ainda...</p>` }}
                   />
                 </div>
               )}
@@ -599,7 +610,7 @@ export default function ReadmePdf() {
                     </div>
 
                     <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
-                      <label style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.4)", cursor: "pointer" }}>
+                      <label style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 600, color: "var(--muted)", cursor: "pointer" }}>
                         <input type="checkbox" checked={splitEnabled} onChange={e => setSplit(e.target.checked)} style={{ accentColor: "#1A56DB" }} />
                         <Scissors size={11} /> Split
                       </label>
@@ -610,9 +621,9 @@ export default function ReadmePdf() {
                           min={200} max={10000}
                           style={{
                             width: 76, padding: "5px 9px", borderRadius: 8,
-                            border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)",
+                            border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`, background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
                             fontSize: 12, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace",
-                            color: "#ffffff",
+                            color: "var(--text)",
                           }}
                         />
                       )}
@@ -624,7 +635,7 @@ export default function ReadmePdf() {
                       {chunks.map((c, i) => (
                         <button key={i} style={btnStyle()} onClick={() => copyText(c, `Bloco ${i + 1} copiado!`)}>
                           <Copy size={10} /> Bloco {i + 1}
-                          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.4)" }}>({c.length})</span>
+                          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "var(--muted)" }}>({c.length})</span>
                         </button>
                       ))}
                     </div>
@@ -636,14 +647,14 @@ export default function ReadmePdf() {
                     placeholder="Selecione a plataforma..."
                     style={{
                       width: "100%", minHeight: 420, padding: "14px 16px",
-                      borderRadius: 10, border: "1px solid rgba(255,255,255,0.06)",
-                      background: "rgba(0,0,0,0.3)", fontSize: 13, lineHeight: 1.65,
+                      borderRadius: 10, border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
+                      background: isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.03)", fontSize: 13, lineHeight: 1.65,
                       fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      color: "#ffffff", resize: "vertical",
+                      color: "var(--text)", resize: "vertical",
                     }}
                   />
 
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "var(--muted)" }}>
                     <Info size={11} />
                     {chunks.length} bloco(s) · {socialText.length.toLocaleString()} chars · limite {PLATFORMS[platform].maxLen.toLocaleString()}
                   </div>
@@ -654,14 +665,14 @@ export default function ReadmePdf() {
               {rightTab === "raw" && (
                 <div style={{ padding: "8px 8px 8px" }}>
                   <pre style={{
-                    background: "rgba(0,0,0,0.4)", color: "#a5f3fc",
+                    background: isDark ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.04)", color: isDark ? "#a5f3fc" : "#1e293b",
                     padding: "16px 18px", borderRadius: 10,
                     fontSize: 11.5, lineHeight: 1.6,
                     overflowX: "auto", overflowY: "auto", maxHeight: 560,
                     whiteSpace: "pre-wrap", wordBreak: "break-all",
                     fontFamily: "'JetBrains Mono', monospace",
                     margin: 0,
-                    border: "1px solid rgba(255,255,255,0.06)",
+                    border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
                   }}>
                     {htmlPreview || "Nada ainda..."}
                   </pre>
@@ -673,7 +684,7 @@ export default function ReadmePdf() {
           {/* Footer */}
           <footer style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap", padding: "8px 0", borderTop: "1px solid rgba(255,255,255,0.06)", marginTop: 8 }}>
             <img src="https://www.guebly.com.br/guebly.png" alt="Guebly" style={{ height: 18, width: "auto", opacity: 0.5 }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
-            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>© {new Date().getFullYear()} Guebly</span>
+            <span style={{ fontSize: 11, color: "var(--muted)" }}>© {new Date().getFullYear()} Guebly</span>
             <span style={badgeStyle}><Star size={9} /> Open-source</span>
             <span style={badgeStyle}><Shield size={9} /> Sem coleta</span>
             <a href="https://github.com/guebly/guebly-readme-to-pdf" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "#3b82f6", textDecoration: "none", fontWeight: 600 }}>

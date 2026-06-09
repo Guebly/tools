@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import Layout from "../components/Layout";
+import { useTheme } from "../contexts/ThemeContext";
 
 const fmtDur = (s: number) =>
   `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
@@ -19,26 +20,6 @@ const fmtSRT = (s: number) => {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")},${String(ms).padStart(3, "0")}`;
 };
 
-const theme = {
-  bg: "#0a0d0b",
-  bg2: "#060806",
-  surface2: "#182019",
-  border: "#1c2b21",
-  text: "#e6f0ea",
-  text2: "#6b8575",
-  text3: "#3d5447",
-  accent: "#25D366",
-  accentSoft: "rgba(37,211,102,0.08)",
-  accentGlow: "rgba(37,211,102,0.15)",
-  card: "#0f1512",
-  cardBorder: "#1a2820",
-  errBg: "#1a0e0e",
-  errBd: "#331a1a",
-  shadow: "0 2px 12px rgba(0,0,0,0.4)",
-  heroGradient:
-    "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(37,211,102,0.06) 0%, transparent 70%)",
-  warnColor: "#f59e0b",
-};
 
 const LANGS = [
   { v: "pt", l: "🇧🇷 Português" },
@@ -79,6 +60,25 @@ interface QueueItem {
 }
 
 export default function ZapTranscriber() {
+  const { theme: appTheme } = useTheme()
+  const isDark = appTheme === 'dark'
+  const theme = isDark ? {
+    bg: "#0a0d0b", bg2: "#060806", surface2: "#182019", border: "#1c2b21",
+    text: "#e6f0ea", text2: "#6b8575", text3: "#3d5447", accent: "#25D366",
+    accentSoft: "rgba(37,211,102,0.08)", accentGlow: "rgba(37,211,102,0.15)",
+    card: "#0f1512", cardBorder: "#1a2820", errBg: "#1a0e0e", errBd: "#331a1a",
+    shadow: "0 2px 12px rgba(0,0,0,0.4)",
+    heroGradient: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(37,211,102,0.06) 0%, transparent 70%)",
+    warnColor: "#f59e0b",
+  } : {
+    bg: "#f4f6f9", bg2: "#ebeef3", surface2: "#ffffff", border: "#e2e8f0",
+    text: "#0f172a", text2: "#475569", text3: "#94a3b8", accent: "#16a34a",
+    accentSoft: "rgba(22,163,74,0.08)", accentGlow: "rgba(22,163,74,0.15)",
+    card: "#ffffff", cardBorder: "#e2e8f0", errBg: "#fef2f2", errBd: "#fecaca",
+    shadow: "0 2px 12px rgba(0,0,0,0.08)",
+    heroGradient: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(22,163,74,0.05) 0%, transparent 70%)",
+    warnColor: "#d97706",
+  }
   const t = theme;
 
   const [queue, setQueue] = useState<QueueItem[]>([]);

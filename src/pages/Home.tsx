@@ -258,7 +258,10 @@ export default function Home() {
         </div>
 
         {/* ── Footer ── */}
-        <div className="flex flex-col items-center gap-3">
+        <div
+          className="flex flex-col items-center gap-3 pt-8"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+        >
           <a
             href="https://github.com/Guebly/tools"
             target="_blank"
