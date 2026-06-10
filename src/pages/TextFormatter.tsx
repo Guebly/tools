@@ -11,6 +11,7 @@ import {
   XCircle,
   AlertCircle,
   Scissors,
+  FileText,
 } from "lucide-react";
 import Layout from "../components/Layout";
 import {
@@ -154,6 +155,17 @@ export default function TextFormatter() {
   const surfaceBg = isDark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.9)";
   const inputBg = isDark ? "rgba(0,0,0,0.35)" : "rgba(0,0,0,0.03)";
 
+  const platformColors: Record<PlatformKey, string> = {
+    linkedin:  "#4B8BFF",
+    instagram: "#dc2743",
+    whatsapp:  "#25D366",
+  };
+  const platformActiveBg: Record<PlatformKey, { bg: string; border: string }> = {
+    linkedin:  { bg: isDark ? "rgba(75,139,255,0.12)"  : "rgba(75,139,255,0.08)",  border: "rgba(75,139,255,0.35)" },
+    instagram: { bg: isDark ? "rgba(220,39,67,0.12)"   : "rgba(220,39,67,0.08)",   border: "rgba(220,39,67,0.35)"  },
+    whatsapp:  { bg: isDark ? "rgba(37,211,102,0.10)"  : "rgba(37,211,102,0.07)",  border: "rgba(37,211,102,0.30)" },
+  };
+
   return (
     <Layout toolName="Text Formatter">
       <div
@@ -161,8 +173,14 @@ export default function TextFormatter() {
       >
         <ToastContainer toasts={toasts} />
 
-        {/* Subtle background glows */}
+        {/* Background: dot grid + ambient glows */}
         <div className="pointer-events-none fixed inset-0 -z-10">
+          {/* Dot grid */}
+          <div style={{
+            position: "absolute", inset: 0,
+            backgroundImage: `radial-gradient(circle, ${isDark ? "rgba(255,255,255,0.025)" : "rgba(0,0,0,0.05)"} 1px, transparent 1px)`,
+            backgroundSize: "28px 28px",
+          }} />
           <div
             className="absolute top-[-200px] right-[-200px] w-[500px] h-[500px] rounded-full"
             style={{ background: "rgba(75,139,255,0.05)", filter: "blur(130px)" }}
@@ -192,11 +210,9 @@ export default function TextFormatter() {
                   onClick={() => setPlatform(key)}
                   className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all duration-150"
                   style={{
-                    background: active
-                      ? isDark ? "rgba(255,255,255,0.09)" : "rgba(0,0,0,0.07)"
-                      : "transparent",
-                    border: `1px solid ${active ? borderColor : "transparent"}`,
-                    color: active ? "var(--text)" : "var(--muted)",
+                    background: active ? platformActiveBg[key].bg : "transparent",
+                    border: `1px solid ${active ? platformActiveBg[key].border : "transparent"}`,
+                    color: active ? platformColors[key] : "var(--muted)",
                   }}
                 >
                   {p.icon}
@@ -258,12 +274,18 @@ export default function TextFormatter() {
               className="flex items-center justify-between px-5 py-3 border-b"
               style={{ borderColor: borderColor }}
             >
-              <span
-                className="text-[10px] font-black tracking-widest uppercase"
-                style={{ color: "var(--muted)" }}
-              >
-                ENTRADA
-              </span>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+                  style={{ background: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)" }}>
+                  <FileText size={11} style={{ color: "var(--muted)" }} />
+                </div>
+                <span
+                  className="text-[10px] font-black tracking-widest uppercase"
+                  style={{ color: "var(--muted)" }}
+                >
+                  ENTRADA
+                </span>
+              </div>
               <span
                 className="text-[10px] font-mono"
                 style={{ color: "var(--muted)" }}
@@ -309,6 +331,15 @@ export default function TextFormatter() {
               style={{ borderColor: borderColor }}
             >
               <div className="flex items-center gap-2.5">
+                <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+                  style={{
+                    background: platformActiveBg[platform].bg,
+                    border: `1px solid ${platformActiveBg[platform].border}`,
+                  }}>
+                  <span style={{ color: platformColors[platform], display: "flex" }}>
+                    {PLATFORM[platform].icon}
+                  </span>
+                </div>
                 <span
                   className="text-[10px] font-black tracking-widest uppercase"
                   style={{ color: "var(--muted)" }}

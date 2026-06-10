@@ -14,11 +14,11 @@ export default function Layout({ toolName, children, fullHeight = false }: Layou
 
   return (
     <div className={fullHeight ? 'flex flex-col h-screen overflow-hidden' : 'min-h-screen flex flex-col'}>
-      {/* 1px IG gradient accent line at very top */}
+      {/* 2px IG gradient accent line at very top */}
       <div
         style={{
-          height: 1,
-          background: 'linear-gradient(90deg, #f09433 0%, #dc2743 50%, #bc1888 100%)',
+          height: 2,
+          background: 'linear-gradient(90deg, #f09433 0%, #e6683c 22%, #dc2743 45%, #cc2366 72%, #bc1888 100%)',
           flexShrink: 0,
         }}
       />

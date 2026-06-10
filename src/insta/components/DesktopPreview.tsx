@@ -259,7 +259,7 @@ export default function DesktopPreview({ profile, highlights, feed, onFeedReorde
 
         {/* Guebly watermark */}
         <div className="flex items-center justify-center gap-2 py-4 opacity-30">
-          <img src="https://www.guebly.com.br/guebly.png" alt="" className="w-4 h-4 rounded object-contain" />
+          <img src="/logo-64.png" alt="" className="w-4 h-4 rounded object-contain" />
           <span className="text-[11px] font-bold" style={{ color: c.textSec }}>InstaPreview by Guebly</span>
         </div>
       </div>
