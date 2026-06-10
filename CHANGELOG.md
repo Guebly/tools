@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-06-09 - Responsividade completa, correções de português e open-source
+
+- **ReadmePdf.tsx** — layout de dois painéis colapsável em coluna única no mobile (< 768px), "chars" → "caracteres"
+- **ZapTranscriber.tsx** — settings grid colapsa para 1 coluna no mobile, feature bar vertical no mobile, stats bar com overflow-x, "Salve no dispositivo" → "Salve para o dispositivo", "chars" → "caracteres"
+- **TextFormatter.tsx** — output panel header com flex-wrap, input/output com border-bottom no mobile, "chars" → "caracteres"
+- **InstaPreview.tsx** — sidebar fixa no mobile começa abaixo do topbar (`top-[54px]`)
+- **Sidebar.tsx** — largura `w-screen` no mobile (largura completa da tela)
+- **Home.tsx** — stats bar com overflow-x para não vazar em telas pequenas
+- **LICENSE** — arquivo MIT adicionado
+- **CONTRIBUTING.md** — guia de contribuição adicionado
+- **package.json** — campos `description`, `homepage`, `author`, `license`, `repository`, `bugs`, `keywords` adicionados
+- **.gitignore** — entradas `.env*`, `.vscode/`, `*.log`, `Thumbs.db`, `*.tsbuildinfo` adicionadas
+- **.github/** — templates de issue (bug/feature) e PR adicionados
+
 ## 2026-06-09 - Melhorias visuais: ZapTranscriber e README to PDF
 
 - **ZapTranscriber.tsx** — dot grid de fundo + blobs de luz, feature pills convertidos em barra horizontal com divisórias (padrão unificado), feature cards (Privado/Rápido/Gratuito) convertidos de grid 3×1 para linha horizontal com ícones lado a lado

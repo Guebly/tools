@@ -267,7 +267,7 @@ export default function TextFormatter() {
           {/* ── INPUT PANEL ── */}
           <div
             className="flex flex-col"
-            style={{ borderRight: `1px solid ${borderColor}` }}
+            style={{ borderRight: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}` }}
           >
             {/* Panel header */}
             <div
@@ -290,7 +290,7 @@ export default function TextFormatter() {
                 className="text-[10px] font-mono"
                 style={{ color: "var(--muted)" }}
               >
-                {input.length.toLocaleString()} chars
+                {input.length.toLocaleString()} caracteres
               </span>
             </div>
 
@@ -327,7 +327,7 @@ export default function TextFormatter() {
           <div className="flex flex-col">
             {/* Panel header */}
             <div
-              className="flex items-center justify-between px-5 py-3 border-b"
+              className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-b"
               style={{ borderColor: borderColor }}
             >
               <div className="flex items-center gap-2.5">
@@ -440,7 +440,7 @@ export default function TextFormatter() {
                 }}
               />
               <span className="text-xs" style={{ color: "var(--muted)" }}>
-                chars
+                caracteres
                 {chunks.length > 1 && (
                   <span className="ml-2" style={{ color: "var(--accent)" }}>
                     → {chunks.length} blocos

@@ -273,7 +273,7 @@ export default function InstaPreview() {
         <div className={[
           "z-50 flex-shrink-0",
           "lg:relative lg:translate-x-0 lg:flex",
-          "fixed top-0 bottom-0 left-0",
+          "fixed top-[54px] bottom-0 left-0",
           "transition-transform duration-200 ease-in-out",
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         ].join(" ")}>

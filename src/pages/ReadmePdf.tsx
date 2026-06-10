@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useMemo } from "react";
+import React, { useState, useCallback, useRef, useMemo, useEffect } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import {
   Upload, Download, Copy, Trash2, Eye, Code2, CheckCircle,
@@ -196,6 +196,13 @@ export default function ReadmePdf() {
   const [copied, setCopied]      = useState(false);
   const { toasts, add: toast }   = useToast();
   const fileRef                  = useRef<HTMLInputElement>(null);
+  const [isMobile, setIsMobile]  = useState(() => window.innerWidth < 768);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
 
   const htmlPreview = useMemo(() => parseMarkdown(md), [md]);
 
@@ -295,10 +302,10 @@ export default function ReadmePdf() {
         </div>
 
         {/* ── Full-height split ── */}
-        <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+        <div style={{ display: "flex", flex: 1, overflow: isMobile ? "auto" : "hidden", flexDirection: isMobile ? "column" : "row" }}>
 
           {/* ══════════ LEFT PANEL ══════════ */}
-          <div style={{ display: "flex", flexDirection: "column", width: "42%", minWidth: 300, borderRight: `1px solid ${bd}`, overflow: "hidden" }}>
+          <div style={{ display: "flex", flexDirection: "column", width: isMobile ? "100%" : "42%", minWidth: isMobile ? "unset" : 300, borderRight: isMobile ? "none" : `1px solid ${bd}`, borderBottom: isMobile ? `1px solid ${bd}` : "none", overflow: isMobile ? "visible" : "hidden", flexShrink: 0 }}>
 
             {/* Header */}
             <div style={panelHeader}>
@@ -385,7 +392,7 @@ export default function ReadmePdf() {
             <div style={{ display: "flex", gap: 5, padding: "9px 14px", flexShrink: 0 }}>
               {[
                 { label: `${words.toLocaleString()} palavras`, icon: <AlignLeft size={9} /> },
-                { label: `${chars.toLocaleString()} chars`,    icon: <Bold size={9} /> },
+                { label: `${chars.toLocaleString()} caracteres`, icon: <Bold size={9} /> },
                 { label: `${lines} linhas`,                    icon: <List size={9} /> },
               ].map(({ label, icon }) => (
                 <span key={label} style={{
@@ -401,13 +408,13 @@ export default function ReadmePdf() {
             </div>
 
             {/* Textarea */}
-            <div style={{ flex: 1, overflow: "hidden", padding: "0 14px 8px" }}>
+            <div style={{ flex: 1, overflow: "hidden", padding: "0 14px 8px", minHeight: isMobile ? 300 : "unset" }}>
               <textarea
                 value={md}
                 onChange={e => setMd(e.target.value)}
                 placeholder="Cole ou escreva seu Markdown aqui..."
                 style={{
-                  width: "100%", height: "100%",
+                  width: "100%", height: isMobile ? 300 : "100%",
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: 12.5, lineHeight: 1.7,
                   background: inputBg,
@@ -452,7 +459,7 @@ export default function ReadmePdf() {
           </div>
 
           {/* ══════════ RIGHT PANEL ══════════ */}
-          <div style={{ display: "flex", flexDirection: "column", flex: 1, overflow: "hidden" }}>
+          <div style={{ display: "flex", flexDirection: "column", flex: 1, overflow: "hidden", minHeight: isMobile ? 400 : "unset" }}>
 
             {/* Panel header */}
             <div style={panelHeader}>
@@ -645,7 +652,7 @@ export default function ReadmePdf() {
                   {/* Info bar */}
                   <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "var(--muted)", flexShrink: 0 }}>
                     <Info size={11} />
-                    {chunks.length} bloco(s) · {socialText.length.toLocaleString()} chars
+                    {chunks.length} bloco(s) · {socialText.length.toLocaleString()} caracteres
                     <span style={{ padding: "2px 7px", borderRadius: 5, fontSize: 10, fontWeight: 600, background: "var(--accent-soft)", color: "var(--accent)", border: "1px solid var(--accent-glow)" }}>
                       limite {PLATFORMS[platform].maxLen.toLocaleString()}
                     </span>

@@ -79,6 +79,7 @@ export default function ZapTranscriber() {
     shadowMd:    isDark ? "0 4px 32px rgba(0,0,0,0.55)" : "0 4px 32px rgba(0,0,0,0.10)",
   };
 
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640);
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [lang, setLang] = useState("pt");
@@ -96,6 +97,12 @@ export default function ZapTranscriber() {
   const langRef = useRef(lang);
   const modelRef = useRef(model);
   const queueRef = useRef<QueueItem[]>([]);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
 
   useEffect(() => { langRef.current = lang; }, [lang]);
   useEffect(() => { modelRef.current = model; }, [model]);
@@ -423,7 +430,7 @@ export default function ZapTranscriber() {
 
           {/* Feature stats bar */}
           <div style={{
-            display: "inline-flex", alignItems: "center", borderRadius: 20, overflow: "hidden",
+            display: "flex", alignItems: "center", borderRadius: 20, overflowX: "auto", maxWidth: "100%",
             border: `1px solid ${isDark ? "rgba(37,211,102,0.18)" : "rgba(22,163,74,0.15)"}`,
             background: isDark ? "rgba(37,211,102,0.05)" : "rgba(22,163,74,0.04)",
           }}>
@@ -435,7 +442,7 @@ export default function ZapTranscriber() {
             ].map(({ icon, label }, i) => (
               <Fragment key={label}>
                 {i > 0 && <div style={{ width: 1, alignSelf: "stretch", background: isDark ? "rgba(37,211,102,0.18)" : "rgba(22,163,74,0.15)" }} />}
-                <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "8px 14px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "8px 14px", flexShrink: 0 }}>
                   <span style={{ color: c.accent }}>{icon}</span>
                   <span style={{ fontSize: "0.72rem", fontWeight: 600, color: isDark ? "rgba(37,211,102,0.8)" : "rgba(22,163,74,0.9)", whiteSpace: "nowrap" }}>{label}</span>
                 </div>
@@ -449,7 +456,7 @@ export default function ZapTranscriber() {
 
           {/* ── SETTINGS ── */}
           <div style={{
-            display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20,
+            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12, marginBottom: 20,
           }}>
             {/* Language */}
             <div style={{
@@ -818,7 +825,7 @@ export default function ZapTranscriber() {
                     }}>
                       {[
                         { icon: <FileText size={11} />, label: `${wc(item.transcript)} palavras` },
-                        { icon: <Zap size={11} />, label: `${item.transcript.length} chars` },
+                        { icon: <Zap size={11} />, label: `${item.transcript.length} caracteres` },
                         { icon: <Clock size={11} />, label: `~${Math.ceil(wc(item.transcript) / 200)} min leitura` },
                       ].map(({ icon, label }) => (
                         <span key={label} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "0.72rem", color: c.text2, fontWeight: 500 }}>
@@ -877,7 +884,7 @@ export default function ZapTranscriber() {
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {[
-                    { step: "No celular", desc: "Segure o áudio → Encaminhar → Salve no dispositivo ou envie para si mesmo → Baixe o arquivo" },
+                    { step: "No celular", desc: "Segure o áudio → Encaminhar → Salve para o dispositivo ou envie para si mesmo → Baixe o arquivo" },
                     { step: "No WhatsApp Web", desc: "Passe o mouse sobre o áudio → Clique na setinha → Download" },
                   ].map(({ step, desc }, i) => (
                     <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
@@ -927,7 +934,7 @@ export default function ZapTranscriber() {
 
           {/* ── FEATURES ── */}
           <div style={{
-            display: "flex", marginTop: 16, borderRadius: 16, overflow: "hidden",
+            display: "flex", flexDirection: isMobile ? "column" : "row", marginTop: 16, borderRadius: 16, overflow: "hidden",
             border: `1.5px solid ${c.border}`, background: c.surface, boxShadow: c.shadow,
           }}>
             {[
@@ -936,7 +943,7 @@ export default function ZapTranscriber() {
               { Icon: Gift,  title: "Gratuito",  desc: "Open source, sem limites", color: c.accent },
             ].map(({ Icon, title, desc, color }, i) => (
               <Fragment key={title}>
-                {i > 0 && <div style={{ width: 1, alignSelf: "stretch", background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)" }} />}
+                {i > 0 && <div style={{ [isMobile ? "height" : "width"]: 1, alignSelf: "stretch", background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)" }} />}
                 <div style={{ flex: 1, padding: "16px 18px", display: "flex", alignItems: "center", gap: 12 }}>
                   <div style={{
                     width: 40, height: 40, borderRadius: 12, flexShrink: 0,

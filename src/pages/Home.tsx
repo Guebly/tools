@@ -245,12 +245,12 @@ export default function Home() {
           </p>
 
           {/* Stats bar */}
-          <div className="inline-flex items-center rounded-2xl overflow-hidden"
+          <div className="flex items-center rounded-2xl overflow-x-auto max-w-full"
             style={{ border: `1px solid ${c.divider}`, background: c.pill }}>
             {stats.map((s, i) => (
               <React.Fragment key={s.label}>
                 {i > 0 && <div className="w-px self-stretch" style={{ background: c.divider }} />}
-                <div className="flex items-center gap-1.5 px-4 py-2.5">
+                <div className="flex items-center gap-1.5 px-3 sm:px-4 py-2.5 flex-shrink-0">
                   <span style={{ color: c.textMuted }}>{s.icon}</span>
                   <span className="text-[11px] font-semibold whitespace-nowrap" style={{ color: c.textSub }}>
                     {s.label}

@@ -171,7 +171,7 @@ export default function Sidebar({
 
   /* ════════════════════════════════════════════════════════════════ */
   return (
-    <aside className="w-72 flex-shrink-0 flex flex-col overflow-hidden h-full
+    <aside className="w-screen sm:w-72 flex-shrink-0 flex flex-col overflow-hidden h-full
       border-r border-slate-200 dark:border-slate-800
       bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-[#0a0a0a]">
 
@@ -429,7 +429,7 @@ export default function Sidebar({
             <Label>Comportamento</Label>
             <Toggle
               checked={profile.autoCount}
-              label="Posts automático"
+              label="Contagem automática"
               sub="Conta as fotos do feed"
               onChange={() => {
                 const next = !profile.autoCount;

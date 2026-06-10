@@ -1,8 +1,20 @@
 {
   "name": "guebly-tools",
-  "private": true,
+  "private": false,
   "version": "1.0.0",
   "type": "module",
+  "description": "Central de ferramentas gratuitas da Guebly: InstaPreview, ZapTranscriber, Text Formatter e README to PDF. 100% no navegador, sem login, sem backend.",
+  "homepage": "https://tools.guebly.com.br",
+  "author": "Guebly <contato@guebly.com.br>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Guebly/tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Guebly/tools/issues"
+  },
+  "keywords": ["tools", "instagram", "whisper", "markdown", "formatter", "open-source", "browser", "react"],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
