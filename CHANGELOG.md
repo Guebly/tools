@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-06-09 - Redesign completo do README to PDF
+
+- **ReadmePdf.tsx** — nova UI: painéis com headers icônicos, seletor de temas coloridos por acento, plataformas com cores individuais (LinkedIn azul / Instagram rosa / WhatsApp verde), syntax tags com hover inline, upload dropzone com glow ring, botão PDF com glow de acento, dot-switcher de tema no rodapé, logo local `/logo-64.png` no rodapé do PDF
+
+## 2026-06-09 - Redesign completo do ZapTranscriber
+
+- **ZapTranscriber.tsx** — nova UI: hero com ícone Mic e glow, cards de configuração lado a lado, dropzone com ícones lucide, queue cards com barra de progresso no topo, botões de ação com ícones lucide (Copy/FileText/Subtitles), feature pills com cores individuais por categoria
+
+## 2026-06-09 - Redesign completo do InstaPreview + correção de logo + botão voltar
+
+- **InstaPreview.tsx** — fundo com dot grid duplo (escuro/claro), glow radial IG, controles flutuantes com pill backdrop-blur, toggles com ig-gradient no estado ativo, rodapé com linhas gradiente flanqueando link
+- **Topbar.tsx** — linha ig-gradient 2px no topo, botão "Voltar" com ArrowLeft + logo local, ícone IG em container ig-gradient, agrupamento visual dos botões de sessão/export
+- **Sidebar.tsx** — logo no rodapé com borda ig-gradient + logo local `/logo-64.png`
+
 ## 2026-06-09 - Correção de dark/light mode em todas as páginas
 
 - **ReadmePdf.tsx** — `ToastStack` corrigido: fundo do toast agora é tema-aware (dark `rgba(20,20,20,0.95)` / light `rgba(255,255,255,0.97)`)
