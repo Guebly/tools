@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-09 - Redesign geral: Home, TextFormatter, Layout + correção de logo
+
+- **Home.tsx** — interface simplificada e mais premium: cards com linha superior colorida por ferramenta (2px), ícone em container com a cor de acento da ferramenta, tags coloridas por ferramenta, CTA "Abrir →" colorido, separador de seção com label, stat pills com ícones (Layers/Globe/Lock/Github), linha IG gradient 2px no topo da navbar
+- **TextFormatter.tsx** — tabs de plataforma com cores de marca no estado ativo (LinkedIn azul, Instagram vermelho, WhatsApp verde), dot grid de fundo, ícone FileText no cabeçalho do painel de entrada, ícone de plataforma colorido no cabeçalho de saída
+- **Layout.tsx** — linha de gradiente aumentada para 2px, gradiente IG completo com 5 stops
+- **DesktopPreview.tsx** — corrigido logo externo quebrado (`guebly.com.br/guebly.png`) → `/logo-64.png`
+
 ## 2026-06-09 - Redesign completo do README to PDF
 
 - **ReadmePdf.tsx** — nova UI: painéis com headers icônicos, seletor de temas coloridos por acento, plataformas com cores individuais (LinkedIn azul / Instagram rosa / WhatsApp verde), syntax tags com hover inline, upload dropzone com glow ring, botão PDF com glow de acento, dot-switcher de tema no rodapé, logo local `/logo-64.png` no rodapé do PDF
