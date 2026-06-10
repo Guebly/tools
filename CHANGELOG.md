@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-06-09 - Melhorias visuais: ZapTranscriber e README to PDF
+
+- **ZapTranscriber.tsx** — dot grid de fundo + blobs de luz, feature pills convertidos em barra horizontal com divisórias (padrão unificado), feature cards (Privado/Rápido/Gratuito) convertidos de grid 3×1 para linha horizontal com ícones lado a lado
+- **ReadmePdf.tsx** — dot grid de fundo + blobs de luz, estatísticas do editor com ícones (AlignLeft/Bold/List)
+
+## 2026-06-09 - Redesign premium da Home
+
+- **Home.tsx** — logo com anel gradiente IG, stats bar horizontal com divisórias, número decorativo gigante em cada card, badge de atalho de teclado colorido com a cor da ferramenta, sombra padrão nos cards
+
 ## 2026-06-09 - Redesign geral: Home, TextFormatter, Layout + correção de logo
 
 - **Home.tsx** — interface simplificada e mais premium: cards com linha superior colorida por ferramenta (2px), ícone em container com a cor de acento da ferramenta, tags coloridas por ferramenta, CTA "Abrir →" colorido, separador de seção com label, stat pills com ícones (Layers/Globe/Lock/Github), linha IG gradient 2px no topo da navbar
