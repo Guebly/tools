@@ -100,6 +100,13 @@ const tools: Tool[] = [
   },
 ]
 
+const stats = [
+  { icon: <Layers size={12} />, label: '4 ferramentas' },
+  { icon: <Globe size={12} />,  label: '100% no navegador' },
+  { icon: <Lock size={12} />,   label: 'Sem login' },
+  { icon: <Github size={12} />, label: 'Open source' },
+]
+
 export default function Home() {
   const navigate = useNavigate()
   const { theme, toggle } = useTheme()
@@ -119,36 +126,27 @@ export default function Home() {
   }, [navigate])
 
   const c = {
-    bg:           isDark ? '#080808'                  : '#f5f6f8',
-    text:         isDark ? '#ffffff'                  : '#0f172a',
-    textSub:      isDark ? 'rgba(255,255,255,0.52)'   : 'rgba(15,23,42,0.62)',
-    textMuted:    isDark ? 'rgba(255,255,255,0.25)'   : 'rgba(15,23,42,0.35)',
-    dot:          isDark ? 'rgba(255,255,255,0.028)'  : 'rgba(0,0,0,0.055)',
-    navBorder:    isDark ? 'rgba(255,255,255,0.07)'   : 'rgba(0,0,0,0.09)',
-    navBg:        isDark ? 'rgba(8,8,8,0.93)'         : 'rgba(245,246,248,0.93)',
-    pillBg:       isDark ? 'rgba(255,255,255,0.06)'   : 'rgba(0,0,0,0.05)',
-    pillBorder:   isDark ? 'rgba(255,255,255,0.09)'   : 'rgba(0,0,0,0.09)',
-    pillColor:    isDark ? 'rgba(255,255,255,0.42)'   : 'rgba(15,23,42,0.52)',
-    cardBg:       isDark ? 'rgba(255,255,255,0.025)'  : 'rgba(255,255,255,0.7)',
-    cardBorder:   isDark ? 'rgba(255,255,255,0.08)'   : 'rgba(0,0,0,0.09)',
-    divider:      isDark ? 'rgba(255,255,255,0.06)'   : 'rgba(0,0,0,0.07)',
-    kbdBg:        isDark ? 'rgba(255,255,255,0.06)'   : 'rgba(0,0,0,0.05)',
-    kbdColor:     isDark ? 'rgba(255,255,255,0.22)'   : 'rgba(0,0,0,0.22)',
+    bg:         isDark ? '#080808'                 : '#f5f6f8',
+    text:       isDark ? '#ffffff'                 : '#0f172a',
+    textSub:    isDark ? 'rgba(255,255,255,0.52)'  : 'rgba(15,23,42,0.62)',
+    textMuted:  isDark ? 'rgba(255,255,255,0.25)'  : 'rgba(15,23,42,0.35)',
+    dot:        isDark ? 'rgba(255,255,255,0.028)' : 'rgba(0,0,0,0.055)',
+    navBorder:  isDark ? 'rgba(255,255,255,0.07)'  : 'rgba(0,0,0,0.09)',
+    navBg:      isDark ? 'rgba(8,8,8,0.93)'        : 'rgba(245,246,248,0.93)',
+    pill:       isDark ? 'rgba(255,255,255,0.06)'  : 'rgba(0,0,0,0.05)',
+    pillBorder: isDark ? 'rgba(255,255,255,0.09)'  : 'rgba(0,0,0,0.09)',
+    pillColor:  isDark ? 'rgba(255,255,255,0.42)'  : 'rgba(15,23,42,0.52)',
+    cardBg:     isDark ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.72)',
+    cardBorder: isDark ? 'rgba(255,255,255,0.08)'  : 'rgba(0,0,0,0.09)',
+    cardShadow: isDark ? '0 1px 4px rgba(0,0,0,0.35)' : '0 1px 4px rgba(0,0,0,0.06)',
+    divider:    isDark ? 'rgba(255,255,255,0.06)'  : 'rgba(0,0,0,0.07)',
   }
 
-  const stats = [
-    { icon: <Layers size={11} />, label: '4 ferramentas' },
-    { icon: <Globe size={11} />,  label: '100% no navegador' },
-    { icon: <Lock size={11} />,   label: 'Sem login' },
-    { icon: <Github size={11} />, label: 'Open source' },
-  ]
-
   return (
-    <div className="min-h-screen transition-colors duration-200" style={{ background: c.bg, color: c.text }}>
+    <div className="min-h-screen" style={{ background: c.bg, color: c.text }}>
 
       {/* Dot grid */}
-      <div
-        className="fixed inset-0 pointer-events-none"
+      <div className="fixed inset-0 pointer-events-none"
         style={{
           backgroundImage: `radial-gradient(circle, ${c.dot} 1px, transparent 1px)`,
           backgroundSize: '28px 28px',
@@ -157,56 +155,48 @@ export default function Home() {
 
       {/* Ambient blobs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-48 -right-48 w-[500px] h-[500px] rounded-full"
-          style={{ background: isDark ? 'rgba(220,39,67,0.045)' : 'rgba(220,39,67,0.065)', filter: 'blur(120px)' }} />
-        <div className="absolute top-1/2 -left-48 w-[400px] h-[400px] rounded-full"
-          style={{ background: isDark ? 'rgba(75,139,255,0.04)' : 'rgba(37,99,235,0.05)', filter: 'blur(110px)' }} />
-        <div className="absolute -bottom-48 right-1/4 w-[400px] h-[400px] rounded-full"
-          style={{ background: isDark ? 'rgba(37,211,102,0.03)' : 'rgba(22,163,74,0.04)', filter: 'blur(120px)' }} />
+        <div className="absolute -top-48 -right-48 w-[520px] h-[520px] rounded-full"
+          style={{ background: isDark ? 'rgba(220,39,67,0.045)' : 'rgba(220,39,67,0.065)', filter: 'blur(130px)' }} />
+        <div className="absolute top-1/2 -left-48 w-[420px] h-[420px] rounded-full"
+          style={{ background: isDark ? 'rgba(75,139,255,0.04)' : 'rgba(37,99,235,0.05)', filter: 'blur(120px)' }} />
+        <div className="absolute -bottom-48 right-1/4 w-[420px] h-[420px] rounded-full"
+          style={{ background: isDark ? 'rgba(37,211,102,0.03)' : 'rgba(22,163,74,0.04)', filter: 'blur(130px)' }} />
       </div>
 
       {/* ── Navbar ── */}
-      <nav
-        className="relative z-20 flex items-center justify-between px-5 sm:px-7"
+      <nav className="relative z-20 flex items-center justify-between px-5 sm:px-7"
         style={{
           height: 52,
           background: c.navBg,
           borderBottom: `1px solid ${c.navBorder}`,
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
-        }}
-      >
+        }}>
         {/* IG gradient top line */}
-        <div className="absolute top-0 left-0 right-0 h-0.5"
-          style={{ background: 'linear-gradient(90deg, #f09433 0%, #e6683c 22%, #dc2743 45%, #cc2366 72%, #bc1888 100%)' }} />
+        <div className="absolute top-0 left-0 right-0"
+          style={{ height: 2, background: 'linear-gradient(90deg, #f09433 0%, #e6683c 22%, #dc2743 45%, #cc2366 72%, #bc1888 100%)' }} />
 
-        {/* Logo */}
         <a href="https://www.guebly.com.br" target="_blank" rel="noopener noreferrer"
-          className="flex items-center gap-2.5 transition-opacity hover:opacity-75 flex-shrink-0">
+          className="flex items-center gap-2.5 flex-shrink-0 transition-opacity hover:opacity-70">
           <img src="/logo-64.png" alt="Guebly" width={22} height={22} className="rounded-md" style={{ objectFit: 'contain' }} />
-          <span className="text-sm font-bold hidden sm:block" style={{ color: c.text, letterSpacing: '-0.01em' }}>
-            Guebly
-          </span>
+          <span className="text-sm font-bold hidden sm:block" style={{ color: c.text, letterSpacing: '-0.01em' }}>Guebly</span>
         </a>
 
-        {/* Center badge */}
         <span className="text-[11px] font-bold px-3 py-1 rounded-full tracking-widest uppercase"
-          style={{ background: c.pillBg, border: `1px solid ${c.pillBorder}`, color: c.pillColor }}>
+          style={{ background: c.pill, border: `1px solid ${c.pillBorder}`, color: c.pillColor }}>
           tools
         </span>
 
-        {/* Right: GitHub + theme toggle */}
         <div className="flex items-center gap-2.5 flex-shrink-0">
           <a href="https://github.com/Guebly/tools" target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-semibold transition-opacity hover:opacity-80"
-            style={{ color: c.pillColor, opacity: 0.75 }}>
+            className="flex items-center gap-1.5 text-xs font-semibold transition-opacity hover:opacity-90"
+            style={{ color: c.pillColor, opacity: 0.65 }}>
             <Github size={14} />
             <span className="hidden sm:inline">GitHub</span>
           </a>
-
           <button onClick={toggle}
             className="flex items-center justify-center w-8 h-8 rounded-lg transition-all hover:opacity-100"
-            style={{ background: c.pillBg, border: `1px solid ${c.pillBorder}`, color: c.pillColor, opacity: 0.75 }}
+            style={{ background: c.pill, border: `1px solid ${c.pillBorder}`, color: c.pillColor, opacity: 0.72 }}
             title={isDark ? 'Modo claro' : 'Modo escuro'}>
             {isDark ? <Sun size={14} /> : <Moon size={14} />}
           </button>
@@ -214,24 +204,30 @@ export default function Home() {
       </nav>
 
       {/* ── Content ── */}
-      <div className="relative z-10 max-w-3xl mx-auto px-5 sm:px-6 pt-14 pb-20">
+      <div className="relative z-10 max-w-3xl mx-auto px-5 sm:px-6 pt-16 pb-20">
 
         {/* ── Hero ── */}
-        <div className="text-center mb-14">
-          {/* Logo */}
+        <div className="text-center mb-12">
+
+          {/* Logo with gradient ring */}
           <a href="https://www.guebly.com.br" target="_blank" rel="noopener noreferrer"
-            className="inline-block mb-7 transition-transform hover:scale-105">
-            <img src="/logo-192.png" alt="Guebly" width={80} height={80} className="rounded-2xl"
-              style={{
-                boxShadow: isDark
-                  ? '0 0 0 1px rgba(255,255,255,0.08), 0 24px 64px rgba(220,39,67,0.2)'
-                  : '0 0 0 1px rgba(0,0,0,0.08), 0 24px 64px rgba(220,39,67,0.15)',
-              }} />
+            className="inline-flex items-center justify-center rounded-[22px] mb-8 p-[2.5px] transition-transform hover:scale-105"
+            style={{
+              background: 'linear-gradient(135deg, #f09433 0%, #dc2743 45%, #bc1888 100%)',
+              boxShadow: isDark
+                ? '0 0 48px rgba(220,39,67,0.28), 0 0 0 1px rgba(255,255,255,0.04)'
+                : '0 0 48px rgba(220,39,67,0.18)',
+            }}>
+            <div className="rounded-[20px] overflow-hidden"
+              style={{ background: isDark ? '#111' : '#fff', width: 84, height: 84 }}>
+              <img src="/logo-192.png" alt="Guebly" width={84} height={84}
+                className="block" style={{ objectFit: 'contain' }} />
+            </div>
           </a>
 
-          {/* Heading */}
-          <h1 className="text-4xl sm:text-[52px] font-black mb-4"
-            style={{ letterSpacing: '-0.045em', lineHeight: 1.02, color: c.text }}>
+          {/* Title */}
+          <h1 className="text-4xl sm:text-[54px] font-black mb-4"
+            style={{ letterSpacing: '-0.045em', lineHeight: 1.01, color: c.text }}>
             Guebly{' '}
             <span style={{
               background: 'linear-gradient(135deg, #f09433 0%, #e6683c 22%, #dc2743 45%, #cc2366 72%, #bc1888 100%)',
@@ -242,22 +238,25 @@ export default function Home() {
           </h1>
 
           {/* Tagline */}
-          <p className="text-sm sm:text-[15px] mb-8 max-w-md mx-auto"
+          <p className="text-sm sm:text-base max-w-sm mx-auto mb-10"
             style={{ color: c.textSub, lineHeight: 1.7 }}>
-            Ferramentas gratuitas para criadores de conteúdo e devs.
-            <br />
-            Tudo roda no navegador. Seus dados ficam só com você.
+            Ferramentas para criadores e devs.
+            Gratuitas, open-source e 100% no navegador.
           </p>
 
-          {/* Stat pills */}
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            {stats.map(s => (
-              <span key={s.label}
-                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
-                style={{ border: `1px solid ${c.pillBorder}`, background: c.pillBg, color: c.pillColor }}>
-                {s.icon}
-                {s.label}
-              </span>
+          {/* Stats bar */}
+          <div className="inline-flex items-center rounded-2xl overflow-hidden"
+            style={{ border: `1px solid ${c.divider}`, background: c.pill }}>
+            {stats.map((s, i) => (
+              <React.Fragment key={s.label}>
+                {i > 0 && <div className="w-px self-stretch" style={{ background: c.divider }} />}
+                <div className="flex items-center gap-1.5 px-4 py-2.5">
+                  <span style={{ color: c.textMuted }}>{s.icon}</span>
+                  <span className="text-[11px] font-semibold whitespace-nowrap" style={{ color: c.textSub }}>
+                    {s.label}
+                  </span>
+                </div>
+              </React.Fragment>
             ))}
           </div>
         </div>
@@ -269,8 +268,7 @@ export default function Home() {
             Ferramentas
           </span>
           <div className="flex-1 h-px" style={{ background: c.divider }} />
-          <span className="text-[10px] font-mono flex-shrink-0"
-            style={{ color: c.textMuted }}>
+          <span className="text-[10px] font-mono flex-shrink-0" style={{ color: c.textMuted }}>
             pressione 1–4
           </span>
         </div>
@@ -289,10 +287,12 @@ export default function Home() {
                 borderLeft:   `1px solid ${c.cardBorder}`,
                 borderTop:    `2px solid ${tool.accent}`,
                 padding: '20px 22px',
+                overflow: 'hidden',
+                boxShadow: c.cardShadow,
               }}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement
-                el.style.background = isDark ? 'rgba(255,255,255,0.045)' : 'rgba(255,255,255,0.92)'
+                el.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.95)'
                 el.style.transform = 'translateY(-3px)'
                 el.style.boxShadow = tool.accentGlow
               }}
@@ -300,31 +300,42 @@ export default function Home() {
                 const el = e.currentTarget as HTMLElement
                 el.style.background = c.cardBg
                 el.style.transform = 'translateY(0)'
-                el.style.boxShadow = 'none'
+                el.style.boxShadow = c.cardShadow
               }}
             >
-              {/* Keyboard badge */}
-              <span
-                className="absolute top-3.5 right-3.5 w-5 h-5 flex items-center justify-center rounded text-[10px] font-bold"
+              {/* Decorative background number */}
+              <span className="absolute select-none pointer-events-none font-black leading-none"
                 style={{
-                  background: c.kbdBg,
-                  color: c.kbdColor,
+                  bottom: -10, right: 14,
+                  fontSize: 96,
+                  color: tool.accent,
+                  opacity: isDark ? 0.07 : 0.05,
+                  fontFamily: 'ui-monospace, SFMono-Regular, monospace',
+                }}>
+                {tool.kbd}
+              </span>
+
+              {/* Keyboard badge — colored with tool accent */}
+              <span
+                className="absolute top-3.5 right-3.5 w-6 h-6 flex items-center justify-center rounded-lg text-[11px] font-bold"
+                style={{
+                  background: tool.accentSoft,
+                  color: tool.accent,
                   fontFamily: 'ui-monospace, monospace',
-                }}
-              >
+                  border: `1px solid ${tool.accent}25`,
+                }}>
                 {tool.kbd}
               </span>
 
               {/* Icon + title */}
               <div className="flex items-start gap-3.5 mb-3.5">
-                <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: tool.accentSoft }}
-                >
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: tool.accentSoft }}>
                   {tool.icon}
                 </div>
                 <div className="pt-0.5 min-w-0">
-                  <h2 className="text-sm font-bold leading-tight" style={{ color: c.text, letterSpacing: '-0.01em' }}>
+                  <h2 className="text-sm font-bold leading-tight"
+                    style={{ color: c.text, letterSpacing: '-0.01em' }}>
                     {tool.title}
                   </h2>
                   <p className="text-[11px] mt-0.5 font-medium" style={{ color: c.textSub }}>
@@ -351,9 +362,7 @@ export default function Home() {
 
               {/* CTA */}
               <div className="flex items-center gap-1.5">
-                <span className="text-[11px] font-bold" style={{ color: tool.accent }}>
-                  Abrir
-                </span>
+                <span className="text-[11px] font-bold" style={{ color: tool.accent }}>Abrir</span>
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
                   stroke={tool.accent} strokeWidth="2.5"
                   className="group-hover:translate-x-1 transition-transform duration-150">
