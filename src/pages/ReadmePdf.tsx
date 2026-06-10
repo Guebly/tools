@@ -283,6 +283,17 @@ export default function ReadmePdf() {
         <ToastStack toasts={toasts} isDark={isDark} />
         <input ref={fileRef} type="file" accept=".md,.txt,.markdown" style={{ display: "none" }} onChange={loadFile} />
 
+        {/* Background: dot grid + ambient blobs */}
+        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: -1, overflow: "hidden" }}>
+          <div style={{
+            position: "absolute", inset: 0,
+            backgroundImage: `radial-gradient(circle, ${isDark ? "rgba(75,139,255,0.025)" : "rgba(37,99,235,0.045)"} 1px, transparent 1px)`,
+            backgroundSize: "28px 28px",
+          }} />
+          <div style={{ position: "absolute", top: -200, right: -200, width: 480, height: 480, borderRadius: "50%", background: isDark ? "rgba(75,139,255,0.03)" : "rgba(37,99,235,0.04)", filter: "blur(130px)" }} />
+          <div style={{ position: "absolute", bottom: -200, left: -200, width: 400, height: 400, borderRadius: "50%", background: isDark ? "rgba(249,115,22,0.025)" : "rgba(249,115,22,0.035)", filter: "blur(110px)" }} />
+        </div>
+
         {/* ── Full-height split ── */}
         <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
 
@@ -373,17 +384,18 @@ export default function ReadmePdf() {
             {/* Stats row */}
             <div style={{ display: "flex", gap: 5, padding: "9px 14px", flexShrink: 0 }}>
               {[
-                { label: `${words.toLocaleString()} palavras` },
-                { label: `${chars.toLocaleString()} chars` },
-                { label: `${lines} linhas` },
-              ].map(({ label }) => (
+                { label: `${words.toLocaleString()} palavras`, icon: <AlignLeft size={9} /> },
+                { label: `${chars.toLocaleString()} chars`,    icon: <Bold size={9} /> },
+                { label: `${lines} linhas`,                    icon: <List size={9} /> },
+              ].map(({ label, icon }) => (
                 <span key={label} style={{
+                  display: "inline-flex", alignItems: "center", gap: 4,
                   fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 6,
                   border: `1px solid ${bd}`,
                   background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
                   color: "var(--muted)",
                 }}>
-                  {label}
+                  {icon}{label}
                 </span>
               ))}
             </div>

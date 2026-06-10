@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, Fragment } from "react";
 import Layout from "../components/Layout";
 import { useTheme } from "../contexts/ThemeContext";
 import {
@@ -61,6 +61,7 @@ export default function ZapTranscriber() {
 
   const c = {
     bg:          isDark ? "#080b09" : "#f4f6f9",
+    dot:         isDark ? "rgba(37,211,102,0.032)" : "rgba(22,163,74,0.048)",
     surface:     isDark ? "#0f1512" : "#ffffff",
     surface2:    isDark ? "#182019" : "#f1f5f0",
     border:      isDark ? "rgba(37,211,102,0.10)" : "rgba(0,0,0,0.08)",
@@ -382,6 +383,17 @@ export default function ZapTranscriber() {
     <Layout toolName="ZapTranscriber">
       <div style={{ minHeight: "100vh", background: c.bg, color: c.text }}>
 
+        {/* Background: dot grid + ambient blobs */}
+        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: -1, overflow: "hidden" }}>
+          <div style={{
+            position: "absolute", inset: 0,
+            backgroundImage: `radial-gradient(circle, ${c.dot} 1px, transparent 1px)`,
+            backgroundSize: "28px 28px",
+          }} />
+          <div style={{ position: "absolute", top: -200, right: -200, width: 520, height: 520, borderRadius: "50%", background: isDark ? "rgba(37,211,102,0.04)" : "rgba(22,163,74,0.05)", filter: "blur(130px)" }} />
+          <div style={{ position: "absolute", bottom: -200, left: -200, width: 420, height: 420, borderRadius: "50%", background: isDark ? "rgba(75,139,255,0.025)" : "rgba(37,99,235,0.03)", filter: "blur(110px)" }} />
+        </div>
+
         {/* ═══ HERO ═══ */}
         <div style={{ position: "relative", overflow: "hidden", paddingTop: "3.5rem", paddingBottom: "2.5rem", textAlign: "center" }}>
           {/* Glow */}
@@ -409,22 +421,25 @@ export default function ZapTranscriber() {
             Suporta múltiplos arquivos e gera legendas .srt.
           </p>
 
-          {/* Feature pills */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
+          {/* Feature stats bar */}
+          <div style={{
+            display: "inline-flex", alignItems: "center", borderRadius: 20, overflow: "hidden",
+            border: `1px solid ${isDark ? "rgba(37,211,102,0.18)" : "rgba(22,163,74,0.15)"}`,
+            background: isDark ? "rgba(37,211,102,0.05)" : "rgba(22,163,74,0.04)",
+          }}>
             {[
               { icon: <Lock size={11} />, label: "100% privado" },
               { icon: <Zap size={11} />, label: "Sem servidor" },
               { icon: <Globe size={11} />, label: "Multi-idioma" },
               { icon: <Gift size={11} />, label: "Open source" },
-            ].map(({ icon, label }) => (
-              <span key={label} style={{
-                display: "inline-flex", alignItems: "center", gap: 5,
-                fontSize: "0.73rem", fontWeight: 600, padding: "5px 11px",
-                borderRadius: 20, background: c.accentSoft,
-                border: `1px solid ${c.accent}28`, color: c.accent,
-              }}>
-                {icon}{label}
-              </span>
+            ].map(({ icon, label }, i) => (
+              <Fragment key={label}>
+                {i > 0 && <div style={{ width: 1, alignSelf: "stretch", background: isDark ? "rgba(37,211,102,0.18)" : "rgba(22,163,74,0.15)" }} />}
+                <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "8px 14px" }}>
+                  <span style={{ color: c.accent }}>{icon}</span>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 600, color: isDark ? "rgba(37,211,102,0.8)" : "rgba(22,163,74,0.9)", whiteSpace: "nowrap" }}>{label}</span>
+                </div>
+              </Fragment>
             ))}
           </div>
         </div>
@@ -911,26 +926,31 @@ export default function ZapTranscriber() {
           </div>
 
           {/* ── FEATURES ── */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginTop: 16 }}>
+          <div style={{
+            display: "flex", marginTop: 16, borderRadius: 16, overflow: "hidden",
+            border: `1.5px solid ${c.border}`, background: c.surface, boxShadow: c.shadow,
+          }}>
             {[
-              { Icon: Lock,  title: "Privado",   desc: "Nada sai do navegador",        color: "#6366f1" },
-              { Icon: Zap,   title: "Rápido",    desc: "Whisper ONNX otimizado",        color: "#f59e0b" },
-              { Icon: Gift,  title: "Gratuito",  desc: "Open source, sem limites",      color: c.accent  },
-            ].map(({ Icon, title, desc, color }) => (
-              <div key={title} style={{
-                background: c.surface, border: `1.5px solid ${c.border}`,
-                borderRadius: 16, padding: "16px 14px", textAlign: "center", boxShadow: c.shadow,
-              }}>
-                <div style={{
-                  width: 40, height: 40, borderRadius: 12, margin: "0 auto 10px",
-                  background: color + "18", border: `1.5px solid ${color}30`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                }}>
-                  <Icon size={18} color={color} strokeWidth={1.8} />
+              { Icon: Lock,  title: "Privado",   desc: "Nada sai do navegador",   color: "#6366f1" },
+              { Icon: Zap,   title: "Rápido",    desc: "Whisper ONNX otimizado",  color: "#f59e0b" },
+              { Icon: Gift,  title: "Gratuito",  desc: "Open source, sem limites", color: c.accent },
+            ].map(({ Icon, title, desc, color }, i) => (
+              <Fragment key={title}>
+                {i > 0 && <div style={{ width: 1, alignSelf: "stretch", background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)" }} />}
+                <div style={{ flex: 1, padding: "16px 18px", display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{
+                    width: 40, height: 40, borderRadius: 12, flexShrink: 0,
+                    background: color + "18", border: `1.5px solid ${color}30`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <Icon size={18} color={color} strokeWidth={1.8} />
+                  </div>
+                  <div>
+                    <p style={{ fontWeight: 800, fontSize: "0.83rem", marginBottom: 3 }}>{title}</p>
+                    <p style={{ color: c.text2, fontSize: "0.72rem", lineHeight: 1.4 }}>{desc}</p>
+                  </div>
                 </div>
-                <p style={{ fontWeight: 800, fontSize: "0.82rem", marginBottom: 4 }}>{title}</p>
-                <p style={{ color: c.text2, fontSize: "0.72rem", lineHeight: 1.5 }}>{desc}</p>
-              </div>
+              </Fragment>
             ))}
           </div>
 
