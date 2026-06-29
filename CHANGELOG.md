@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-06-29 - 6 novas ferramentas + lazy-loading + cross-links
+
+- **6 ferramentas novas:** JSON Formatter (`/json-formatter`), Gerador de Senhas
+  (`/password-generator`, entropia + crypto), Color Studio (`/color-studio`,
+  HEX/RGB/HSL + paleta), Encoders (`/encoders`, Base64/URL UTF-8), Contador de
+  Palavras (`/word-counter`) e Gerador de QR Code (`/qr-code`, lib `qrcode`).
+  Total: **10 ferramentas**.
+- **Lazy-loading das rotas** (`App.tsx` com `React.lazy` + `Suspense`): cada
+  ferramenta vira um chunk próprio. O bundle inicial caiu de ~872 kB para ~193 kB
+  (o WASM do Whisper/ZapTranscriber só carrega ao abrir a ferramenta).
+- **Home:** novos cards (atalhos de teclado 1–0), contagem "10 ferramentas" e nova
+  seção **"Mais da Guebly"** com links para Sign, Propostas e Calendar.
+- **Dependência:** `qrcode` + `@types/qrcode`.
+
 ## 2026-06-09 - Responsividade completa, correções de português e open-source
 
 - **ReadmePdf.tsx** — layout de dois painéis colapsável em coluna única no mobile (< 768px), "chars" → "caracteres"

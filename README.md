@@ -2,7 +2,7 @@
 
 > **Acesse agora:** [tools.guebly.com.br](https://tools.guebly.com.br)
 
-Hub unificado de ferramentas gratuitas da Guebly. SPA em React + Vite + TypeScript que combina 4 ferramentas independentes em uma única aplicação.
+Hub unificado de ferramentas gratuitas da Guebly. SPA em React + Vite + TypeScript que combina 10 ferramentas independentes em uma única aplicação. Rotas com **lazy-loading** — cada ferramenta carrega só quando aberta.
 
 ## Ferramentas incluídas
 
@@ -12,6 +12,12 @@ Hub unificado de ferramentas gratuitas da Guebly. SPA em React + Vite + TypeScri
 | **ZapTranscriber** | `/zap-transcriber` | Transcreva áudios e vídeos do WhatsApp diretamente no navegador. Whisper AI local, 100% privado. |
 | **Text Formatter** | `/text-formatter` | Converta Markdown para LinkedIn, Instagram e WhatsApp sem perder a formatação. |
 | **README to PDF** | `/readme-pdf` | Converta arquivos Markdown em PDFs profissionais com 3 temas. Live preview, sem servidor. |
+| **JSON Formatter** | `/json-formatter` | Valide, formate e minifique JSON, com a mensagem de erro exata. |
+| **Gerador de Senhas** | `/password-generator` | Senhas fortes com aleatoriedade criptográfica e medidor de entropia. |
+| **Color Studio** | `/color-studio` | Converta HEX/RGB/HSL e gere paleta de tons e sombras. |
+| **Encoders** | `/encoders` | Codifique/decodifique Base64 e URL com suporte a UTF-8. |
+| **Contador de Palavras** | `/word-counter` | Palavras, caracteres, frases e tempo de leitura/fala em tempo real. |
+| **Gerador de QR Code** | `/qr-code` | Gere QR Codes de texto/link com cores e baixe em PNG. |
 
 ## Tecnologias
 

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
-import { Sun, Moon, Globe, Lock, Github, Layers } from 'lucide-react'
+import { Sun, Moon, Globe, Lock, Github, Layers, Braces, KeyRound, Palette, Binary, Type, QrCode, ArrowUpRight, CalendarDays, FileText, PenTool } from 'lucide-react'
 
 interface Tool {
   path: string
@@ -98,10 +98,58 @@ const tools: Tool[] = [
       </svg>
     ),
   },
+  {
+    path: '/json-formatter', kbd: '5',
+    title: 'JSON Formatter', subtitle: 'Formatar & Validar JSON',
+    description: 'Valide, formate (2/4 espaços) e minifique JSON. Mostra o erro exato quando algo está quebrado.',
+    tags: ['Formatar', 'Minificar', 'Validar'],
+    accent: '#10b981', accentSoft: 'rgba(16,185,129,0.10)', accentGlow: '0 16px 48px rgba(16,185,129,0.18)',
+    icon: <Braces size={20} color="#10b981" />,
+  },
+  {
+    path: '/password-generator', kbd: '6',
+    title: 'Gerador de Senhas', subtitle: 'Senhas Fortes e Aleatórias',
+    description: 'Senhas seguras com aleatoriedade criptográfica real. Medidor de força em bits de entropia.',
+    tags: ['Crypto', 'Entropia', 'Seguro'],
+    accent: '#8b5cf6', accentSoft: 'rgba(139,92,246,0.10)', accentGlow: '0 16px 48px rgba(139,92,246,0.18)',
+    icon: <KeyRound size={20} color="#8b5cf6" />,
+  },
+  {
+    path: '/color-studio', kbd: '7',
+    title: 'Color Studio', subtitle: 'Conversor & Paleta de Cores',
+    description: 'Converta entre HEX, RGB e HSL e gere a paleta de tons e sombras. Clique para copiar.',
+    tags: ['HEX/RGB/HSL', 'Paleta', 'Designer'],
+    accent: '#ec4899', accentSoft: 'rgba(236,72,153,0.10)', accentGlow: '0 16px 48px rgba(236,72,153,0.18)',
+    icon: <Palette size={20} color="#ec4899" />,
+  },
+  {
+    path: '/encoders', kbd: '8',
+    title: 'Encoders', subtitle: 'Base64 & URL (UTF-8)',
+    description: 'Codifique e decodifique Base64 e URL com suporte completo a UTF-8. Inverter com um clique.',
+    tags: ['Base64', 'URL', 'UTF-8'],
+    accent: '#06b6d4', accentSoft: 'rgba(6,182,212,0.10)', accentGlow: '0 16px 48px rgba(6,182,212,0.18)',
+    icon: <Binary size={20} color="#06b6d4" />,
+  },
+  {
+    path: '/word-counter', kbd: '9',
+    title: 'Contador de Palavras', subtitle: 'Estatísticas de Texto',
+    description: 'Palavras, caracteres, frases, parágrafos e tempo de leitura/fala em tempo real.',
+    tags: ['Palavras', 'Leitura', 'Tempo real'],
+    accent: '#f59e0b', accentSoft: 'rgba(245,158,11,0.10)', accentGlow: '0 16px 48px rgba(245,158,11,0.18)',
+    icon: <Type size={20} color="#f59e0b" />,
+  },
+  {
+    path: '/qr-code', kbd: '0',
+    title: 'Gerador de QR Code', subtitle: 'Texto/Link em QR Code',
+    description: 'Gere QR Codes de qualquer texto ou link, escolha cor e tamanho, e baixe em PNG.',
+    tags: ['QR Code', 'PNG', 'Cores'],
+    accent: '#6366f1', accentSoft: 'rgba(99,102,241,0.10)', accentGlow: '0 16px 48px rgba(99,102,241,0.18)',
+    icon: <QrCode size={20} color="#6366f1" />,
+  },
 ]
 
 const stats = [
-  { icon: <Layers size={12} />, label: '4 ferramentas' },
+  { icon: <Layers size={12} />, label: '10 ferramentas' },
   { icon: <Globe size={12} />,  label: '100% no navegador' },
   { icon: <Lock size={12} />,   label: 'Sem login' },
   { icon: <Github size={12} />, label: 'Open source' },
@@ -118,6 +166,9 @@ export default function Home() {
       const map: Record<string, string> = {
         '1': '/insta-preview', '2': '/zap-transcriber',
         '3': '/text-formatter', '4': '/readme-pdf',
+        '5': '/json-formatter', '6': '/password-generator',
+        '7': '/color-studio', '8': '/encoders',
+        '9': '/word-counter', '0': '/qr-code',
       }
       if (map[e.key]) navigate(map[e.key])
     }
@@ -269,7 +320,7 @@ export default function Home() {
           </span>
           <div className="flex-1 h-px" style={{ background: c.divider }} />
           <span className="text-[10px] font-mono flex-shrink-0" style={{ color: c.textMuted }}>
-            pressione 1–4
+            pressione 1–0
           </span>
         </div>
 
@@ -370,6 +421,33 @@ export default function Home() {
                 </svg>
               </div>
             </button>
+          ))}
+        </div>
+
+        {/* ── Mais da Guebly ── */}
+        <div className="flex items-center gap-3 mb-4">
+          <span className="text-[10px] font-black tracking-widest uppercase flex-shrink-0" style={{ color: c.textMuted }}>
+            Mais da Guebly
+          </span>
+          <div className="flex-1 h-px" style={{ background: c.divider }} />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-14">
+          {[
+            { href: 'https://sign.guebly.com.br',     icon: <PenTool size={16} />,      title: 'Guebly Sign',      desc: 'Assinatura eletrônica com validade jurídica.' },
+            { href: 'https://proposal.guebly.com.br', icon: <FileText size={16} />,     title: 'Guebly Propostas', desc: 'Propostas comerciais que fecham negócio.' },
+            { href: 'https://agendar.guebly.com.br',  icon: <CalendarDays size={16} />, title: 'Guebly Calendar',  desc: 'Agendamento integrado ao Google Calendar.' },
+          ].map(p => (
+            <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer"
+              className="group rounded-2xl p-4 transition-transform hover:-translate-y-0.5"
+              style={{ background: c.cardBg, border: `1px solid ${c.cardBorder}`, boxShadow: c.cardShadow, textDecoration: 'none' }}>
+              <div className="flex items-center justify-between mb-2.5">
+                <span style={{ color: c.textSub }}>{p.icon}</span>
+                <ArrowUpRight size={14} style={{ color: c.textMuted }}
+                  className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+              <h3 className="text-sm font-bold" style={{ color: c.text, letterSpacing: '-0.01em' }}>{p.title}</h3>
+              <p className="text-[11px] mt-1 leading-relaxed" style={{ color: c.textSub }}>{p.desc}</p>
+            </a>
           ))}
         </div>
 
