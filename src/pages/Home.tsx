@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
-import { Sun, Moon, Globe, Lock, Github, Layers, Braces, KeyRound, Palette, Binary, Type, QrCode, ArrowUpRight, CalendarDays, FileText, PenTool } from 'lucide-react'
+import { Sun, Moon, Globe, Lock, Github, Layers, Braces, KeyRound, Palette, Binary, Type, QrCode, ArrowUpRight, PenTool } from 'lucide-react'
 
 interface Tool {
   path: string
@@ -431,25 +431,21 @@ export default function Home() {
           </span>
           <div className="flex-1 h-px" style={{ background: c.divider }} />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-14">
-          {[
-            { href: 'https://sign.guebly.com.br',     icon: <PenTool size={16} />,      title: 'Guebly Sign',      desc: 'Assinatura eletrônica com validade jurídica.' },
-            { href: 'https://proposal.guebly.com.br', icon: <FileText size={16} />,     title: 'Guebly Propostas', desc: 'Propostas comerciais que fecham negócio.' },
-            { href: 'https://agendar.guebly.com.br',  icon: <CalendarDays size={16} />, title: 'Guebly Calendar',  desc: 'Agendamento integrado ao Google Calendar.' },
-          ].map(p => (
-            <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer"
-              className="group rounded-2xl p-4 transition-transform hover:-translate-y-0.5"
-              style={{ background: c.cardBg, border: `1px solid ${c.cardBorder}`, boxShadow: c.cardShadow, textDecoration: 'none' }}>
-              <div className="flex items-center justify-between mb-2.5">
-                <span style={{ color: c.textSub }}>{p.icon}</span>
-                <ArrowUpRight size={14} style={{ color: c.textMuted }}
-                  className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </div>
-              <h3 className="text-sm font-bold" style={{ color: c.text, letterSpacing: '-0.01em' }}>{p.title}</h3>
-              <p className="text-[11px] mt-1 leading-relaxed" style={{ color: c.textSub }}>{p.desc}</p>
-            </a>
-          ))}
-        </div>
+        <a href="https://sign.guebly.com.br" target="_blank" rel="noopener noreferrer"
+          className="group flex items-center gap-4 rounded-2xl p-4 mb-14 transition-transform hover:-translate-y-0.5"
+          style={{ background: c.cardBg, border: `1px solid ${c.cardBorder}`, boxShadow: c.cardShadow, textDecoration: 'none' }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: c.pill, color: c.textSub }}>
+            <PenTool size={18} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-bold" style={{ color: c.text, letterSpacing: '-0.01em' }}>Guebly Sign</h3>
+            <p className="text-[11px] mt-0.5 leading-relaxed" style={{ color: c.textSub }}>
+              Assinatura eletrônica com validade jurídica. Conheça o produto da Guebly.
+            </p>
+          </div>
+          <ArrowUpRight size={16} style={{ color: c.textMuted }}
+            className="flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        </a>
 
         {/* ── Footer ── */}
         <div className="flex items-center justify-center gap-3 flex-wrap pt-6"
