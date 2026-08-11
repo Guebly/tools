@@ -1,0 +1,13 @@
+name: Deploy tools
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  packages: write
+jobs:
+  deploy:
+    uses: Guebly/Guebly/.github/workflows/deploy-app.yml@main
+    with:
+      app: tools
+    secrets: inherit
