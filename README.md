@@ -146,3 +146,5 @@ MIT — open source, use como quiser.
 ---
 
 Feito com ❤️ pela [Guebly](https://www.guebly.com.br)
+
+<!-- probe: teste de billing do Actions -->
