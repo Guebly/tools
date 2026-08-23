@@ -4,11 +4,54 @@
  *
  * Entrada: Markdown "estilo ChatGPT" (**, _, *, #, listas, --- , blockquote, links, tabelas)
  * Saída:
- *   - WhatsApp: conversão REAL (*negrito* e _itálico_)
- *   - LinkedIn/Instagram: MODO COMPATÍVEL (sem Unicode "math bold/italic")
+ *   - WhatsApp: conversão REAL (*negrito* e _itálico_, que o próprio WhatsApp renderiza)
+ *   - LinkedIn/Instagram: conversão REAL para Unicode "Mathematical Alphanumeric
+ *     Symbols" — os caracteres saem literalmente em negrito/itálico (𝐀𝐁𝐂 / 𝐴𝐵𝐶),
+ *     já que essas plataformas não interpretam Markdown.
  */
 
 type ProtectedChunk = { key: string; value: string };
+
+// ── Unicode Mathematical Alphanumeric Symbols ──────────────────────────────
+// Mapeia A-Z / a-z / 0-9 para os blocos Unicode de negrito, itálico e
+// negrito-itálico "de verdade" (aparecem em negrito/itálico em QUALQUER
+// plataforma, mesmo sem suporte a Markdown — LinkedIn, Instagram, etc.)
+type MathVariant = "bold" | "italic" | "boldItalic";
+
+const MATH_RANGES: Record<
+  MathVariant,
+  { upperStart: number; lowerStart: number; digitStart: number | null }
+> = {
+  bold: { upperStart: 0x1d400, lowerStart: 0x1d41a, digitStart: 0x1d7ce },
+  italic: { upperStart: 0x1d434, lowerStart: 0x1d44e, digitStart: null },
+  boldItalic: { upperStart: 0x1d468, lowerStart: 0x1d482, digitStart: 0x1d7ce },
+};
+
+// U+1D455 (italic lowercase "h") não é um caractere Unicode alocado — o
+// padrão usa o símbolo de compatibilidade U+210E (PLANCK CONSTANT) no lugar.
+const ITALIC_H = "ℎ";
+
+function toMathVariant(input: string, variant: MathVariant): string {
+  const range = MATH_RANGES[variant];
+  let out = "";
+  for (const ch of input) {
+    if (variant === "italic" && ch === "h") {
+      out += ITALIC_H;
+      continue;
+    }
+    const code = ch.codePointAt(0) ?? 0;
+    if (code >= 0x41 && code <= 0x5a) {
+      out += String.fromCodePoint(range.upperStart + (code - 0x41));
+    } else if (code >= 0x61 && code <= 0x7a) {
+      out += String.fromCodePoint(range.lowerStart + (code - 0x61));
+    } else if (code >= 0x30 && code <= 0x39 && range.digitStart != null) {
+      out += String.fromCodePoint(range.digitStart + (code - 0x30));
+    } else {
+      out += ch;
+    }
+  }
+  return out;
+}
 
 function normalize(text: string) {
   return (text ?? "").replace(/\r\n?/g, "\n");
@@ -103,11 +146,47 @@ function mdTablesToPlain(text: string) {
   return out.join("\n");
 }
 
+// Converte blocos de citação (`> texto`) preservando a quebra de
+// parágrafo: agrupa linhas "> " consecutivas, remove o prefixo, marca
+// visualmente com "❝ " e garante uma linha em branco antes/depois do
+// bloco para que não fiquem grudadas no parágrafo anterior/seguinte.
+function blockquotesToPlain(text: string) {
+  const lines = text.split("\n");
+  const out: string[] = [];
+  let i = 0;
+
+  const isQuoteLine = (l: string) => /^\s*>\s?/.test(l);
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    if (!isQuoteLine(line)) {
+      out.push(line);
+      i += 1;
+      continue;
+    }
+
+    const quoteLines: string[] = [];
+    while (i < lines.length && isQuoteLine(lines[i])) {
+      quoteLines.push(lines[i].replace(/^\s*>\s?/, ""));
+      i += 1;
+    }
+
+    if (out.length && out[out.length - 1].trim() !== "") out.push("");
+    quoteLines.forEach((q, idx) => {
+      out.push(idx === 0 ? `❝ ${q}`.trimEnd() : q.trimEnd());
+    });
+    if (i < lines.length && lines[i].trim() !== "") out.push("");
+  }
+
+  return out.join("\n");
+}
+
 function cleanupMarkdown(text: string) {
   let out = text;
 
   out = out.replace(/^\s*---+\s*$/gm, "────────────");
-  out = out.replace(/^\s*>\s?/gm, "");
+  out = blockquotesToPlain(out);
 
   out = mdLinksToPlain(out);
   out = mdTablesToPlain(out);
@@ -171,14 +250,32 @@ function toSocialCompatible(text: string) {
     return `${title.toUpperCase()}\n`;
   });
 
-  out = out.replace(/\*\*([^*\n]+?)\*\*/g, (_m, g1) => `*${g1}*`);
+  // ***negrito+itálico*** → Unicode bold-italic real
+  out = out.replace(/\*\*\*([^*\n]+?)\*\*\*/g, (_m, g1) =>
+    toMathVariant(g1, "boldItalic")
+  );
 
+  // **negrito** → Unicode bold real (não markdown, o LinkedIn/Instagram não renderizam **)
+  out = out.replace(/\*\*([^*\n]+?)\*\*/g, (_m, g1) => toMathVariant(g1, "bold"));
+
+  // *itálico* → Unicode italic real
   out = out
     .split("\n")
     .map((line) =>
       line.replace(
         /(^|[\s([{"'"'])\*([^*\n]+?)\*(?=[\s)\]}.,!?;:'""']|$)/g,
-        (_m, p1, g1) => `${p1}_${g1}_`
+        (_m, p1, g1) => `${p1}${toMathVariant(g1, "italic")}`
+      )
+    )
+    .join("\n");
+
+  // _itálico_ (estilo alternativo, ex: saída do ChatGPT) → Unicode italic real
+  out = out
+    .split("\n")
+    .map((line) =>
+      line.replace(
+        /(^|[\s([{"'"'])_([^_\n]+?)_(?=[\s)\]}.,!?;:'""']|$)/g,
+        (_m, p1, g1) => `${p1}${toMathVariant(g1, "italic")}`
       )
     )
     .join("\n");

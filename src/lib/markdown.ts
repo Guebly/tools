@@ -67,13 +67,20 @@ export function parseMarkdown(md: string): string {
     return `<table><thead><tr>${thRow}</tr></thead><tbody>${tbodyRows}</tbody></table>`;
   });
 
-  // Paragraphs — lines not already wrapped
+  // Paragraphs — lines not already wrapped.
+  // IMPORTANT: the consecutive-<li> wrapper above appends "</ul>" right after
+  // the last <li> line's own newline, so the closing tag ends up alone on its
+  // own line (e.g. right before a following blockquote/paragraph). The old
+  // regex only recognized OPENING tags (`<ul`, `<blockquote`, ...), so a bare
+  // "</ul>" line fell through and got wrapped as "<p></ul></p>", corrupting
+  // the list markup whenever a list was followed by another block (like a
+  // blockquote). Matching optional closing slashes fixes this at the root.
   html = html
     .split("\n")
     .map((line) => {
       if (
         !line.trim() ||
-        /^<(h[1-6]|ul|ol|li|pre|blockquote|table|hr|img)/.test(line)
+        /^<\/?(h[1-6]|ul|ol|li|pre|blockquote|table|hr|img)/.test(line)
       )
         return line;
       return `<p>${line}</p>`;
