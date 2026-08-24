@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-08-24 - Fix: ZapTranscriber com whisper.worker 503 e trava de 20s+ ao trocar idioma/modelo
+
+- **`nginx.conf`** — `location /assets/` definia seu próprio `add_header
+  Cache-Control`, o que descarta silenciosamente (regra de herança do nginx)
+  os `add_header` de `Cross-Origin-Opener-Policy` / `Cross-Origin-Embedder-Policy`
+  / `X-Content-Type-Options` herdados do `server{}`. Resultado: todo asset em
+  `/assets/` (inclusive `whisper.worker-*.js`) ia pro navegador sem COEP.
+  Como a página é cross-origin-isolated (COEP: require-corp), o Chrome recusava
+  instanciar o Worker cujo script não carregava o mesmo COEP — reproduzido em
+  `transcritor.guebly.com.br` como 503 no worker + trava de 20s+ ao clicar em
+  idioma ("English") ou modelo ("Tiny"). Corrigido redeclarando os 3 headers
+  explicitamente dentro do `location /assets/`.
+
 ## 2026-06-29 - 6 novas ferramentas + lazy-loading + cross-links
 
 - **6 ferramentas novas:** JSON Formatter (`/json-formatter`), Gerador de Senhas
